@@ -15,8 +15,11 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
         title: const Text('Memories'),
+        backgroundColor: Colors.black.withOpacity(0.5),
+        elevation: 0,
       ),
       body: GoogleMap(
         mapType: MapType.hybrid,

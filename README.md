@@ -19,17 +19,14 @@
 ## Dev ToDos
 ### Step 1
 - [ ] Create Flutter project with firebase setup.
-- [ ] Display map
+- [x] Display map
 - [ ] Add google login
 - [ ] Add marker to map
 - [ ] Create memories based on location
 - [ ] Read memories based on location
 - [ ] Show all user's memories
+- [ ] Splash screen
 
 ### Step 2
 - [ ] Add friends
 - [ ] Limit the memories to the user's friends
-
-
-## Dev FixMes
-- [ ] Fix google map api key in index.html
