@@ -22,7 +22,7 @@ class Home extends ConsumerWidget {
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         title: const Text('Memories'),
-        backgroundColor: Colors.black.withOpacity(0.5),
+        backgroundColor: Colors.black.withOpacity(0.2),
         elevation: 0,
       ),
       body: GoogleMap(
@@ -31,6 +31,8 @@ class Home extends ConsumerWidget {
         onMapCreated: (GoogleMapController controller) {
           _controller.complete(controller);
         },
+        // TODO: 自分の場所に移動できるようにする
+        // myLocationEnabled: true,
         markers: {
           Marker(
             markerId: const MarkerId('1'),

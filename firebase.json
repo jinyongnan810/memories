@@ -7,7 +7,17 @@
     "public": "build/web",
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"]
   },
-  "storage": {
-    "rules": "storage.rules"
+  "storage": { "rules": "storage.rules" },
+  "flutter": {
+    "platforms": {
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "memories-f3a84",
+          "configurations": {
+            "web": "1:925899038090:web:dc812fd4e3c3b9abd97c73"
+          }
+        }
+      }
+    }
   }
 }
