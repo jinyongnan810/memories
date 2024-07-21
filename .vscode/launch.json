@@ -8,6 +8,7 @@
       "name": "memories",
       "request": "launch",
       "type": "dart",
+      "args": ["-d", "chrome", "--web-port", "1234"],
       "preLaunchTask": "Apply Environment Variables"
     },
     {
