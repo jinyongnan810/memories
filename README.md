@@ -29,3 +29,7 @@
 ### Step 2
 - [ ] Add friends
 - [ ] Limit the memories to the user's friends
+
+
+## Dev FixMes
+- [ ] Fix google map api key in index.html
