@@ -28,8 +28,8 @@ class MyApp extends StatelessWidget {
     );
   }
 
-  ThemeData _buildTheme(brightness) {
-    var baseTheme = ThemeData(brightness: brightness);
+  ThemeData _buildTheme(Brightness brightness) {
+    final baseTheme = ThemeData(brightness: brightness);
 
     return baseTheme.copyWith(
       textTheme: GoogleFonts.reggaeOneTextTheme(baseTheme.textTheme),

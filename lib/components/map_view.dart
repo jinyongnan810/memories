@@ -22,13 +22,11 @@ class MapView extends ConsumerWidget {
     return GoogleMap(
       mapType: MapType.hybrid,
       initialCameraPosition: _initialPosition,
-      onMapCreated: (GoogleMapController controller) {
-        _controller.complete(controller);
-      },
-      onTap: (LatLng latLng) {
+      onMapCreated: _controller.complete,
+      onTap: (latLng) {
         ref.read(mapMarkerProvider.notifier).addMarker(latLng);
       },
-      // TODO: 自分の場所に移動できるようにする
+      // TODO(me): 自分の場所に移動できるようにする
       // myLocationEnabled: true,
       markers: mapMarkerStatus.readyToShowMarkers
           ? {

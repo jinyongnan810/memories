@@ -12,7 +12,9 @@ class MapMarker extends _$MapMarker {
     ref.listen(markerIconProvider, (prev, next) {
       if (prev != next && next.asData?.value != null) {
         state = state.copyWith(
-            readyToShowMarkers: true, markerIcon: next.asData!.value);
+          readyToShowMarkers: true,
+          markerIcon: next.asData!.value,
+        );
       }
     });
     return const MapMarkerStatus();

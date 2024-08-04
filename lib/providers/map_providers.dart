@@ -5,5 +5,7 @@ import 'package:memories/gen/assets.gen.dart';
 
 final markerIconProvider = FutureProvider((ref) async {
   return BitmapDescriptor.asset(
-      ImageConfiguration.empty, Assets.icons.star.keyName);
+    ImageConfiguration.empty,
+    Assets.icons.star.keyName,
+  );
 });

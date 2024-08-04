@@ -27,7 +27,7 @@ class MyUserProfile extends ConsumerWidget {
     }
     return IconButton(
       onPressed: () async {
-        ref.read(loginStatusProvider.notifier).login();
+        await ref.read(loginStatusProvider.notifier).login();
       },
       icon: const Icon(Icons.person),
     );

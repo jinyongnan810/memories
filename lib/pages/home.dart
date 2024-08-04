@@ -18,7 +18,7 @@ class Home extends ConsumerWidget {
           MyUserProfile(),
           SizedBox(
             width: 12,
-          )
+          ),
         ],
       ),
       body: Stack(
