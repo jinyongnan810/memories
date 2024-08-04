@@ -3,7 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:memories/providers/map_providers.dart';
+
+import '../providers/providers.dart';
 
 class MapView extends ConsumerWidget {
   MapView({super.key});
@@ -16,7 +17,7 @@ class MapView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final markerIcon = ref.watch(markerIconProvider).valueOrNull;
+    final mapMarkerStatus = ref.watch(mapMarkerProvider);
 
     return GoogleMap(
       mapType: MapType.hybrid,
@@ -24,16 +25,23 @@ class MapView extends ConsumerWidget {
       onMapCreated: (GoogleMapController controller) {
         _controller.complete(controller);
       },
+      onTap: (LatLng latLng) {
+        ref.read(mapMarkerProvider.notifier).addMarker(latLng);
+      },
       // TODO: 自分の場所に移動できるようにする
       // myLocationEnabled: true,
-      markers: {
-        Marker(
-          markerId: const MarkerId('1'),
-          position: const LatLng(35.6809591, 139.7673068),
-          // TODO: show loading when markerIcon is null
-          icon: markerIcon ?? BitmapDescriptor.defaultMarker,
-        ),
-      },
+      markers: mapMarkerStatus.readyToShowMarkers
+          ? {
+              ...mapMarkerStatus.markers.asMap().entries.map(
+                    (entry) => Marker(
+                      markerId: MarkerId(entry.key.toString()),
+                      position: entry.value,
+                      icon: mapMarkerStatus.markerIcon ??
+                          BitmapDescriptor.defaultMarker,
+                    ),
+                  ),
+            }
+          : {},
     );
   }
 }
