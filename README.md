@@ -2,6 +2,9 @@
 ## Purpose
 - Provide convenient way to add and view memories by the location.
 
+## Learning
+- [Memos](memos.md)
+
 ## Roadmap
 - [ ] Basic installation
   - [ ] Add memories to a location
@@ -18,12 +21,12 @@
 
 ## Dev ToDos
 ### Step 1
-- [ ] Create Flutter project with firebase setup.
+- [x] Create Flutter project with firebase setup.
 - [x] Display map
-- [ ] Add google login
-- [ ] Add marker to map
+- [x] Add google login
+- [x] Add marker to map
 - [ ] Create memories based on location
-- [ ] Read memories based on location
+- [x] Read memories based on location
 - [ ] Show all user's memories
 - [ ] Splash screen
 
