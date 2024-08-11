@@ -18,7 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$MapMarkerStatus {
   List<LatLng> get markers => throw _privateConstructorUsedError;
   bool get readyToShowMarkers => throw _privateConstructorUsedError;
-  AssetMapBitmap? get markerIcon => throw _privateConstructorUsedError;
+  BitmapDescriptor? get markerIcon => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $MapMarkerStatusCopyWith<MapMarkerStatus> get copyWith =>
@@ -34,7 +34,7 @@ abstract class $MapMarkerStatusCopyWith<$Res> {
   $Res call(
       {List<LatLng> markers,
       bool readyToShowMarkers,
-      AssetMapBitmap? markerIcon});
+      BitmapDescriptor? markerIcon});
 }
 
 /// @nodoc
@@ -66,7 +66,7 @@ class _$MapMarkerStatusCopyWithImpl<$Res, $Val extends MapMarkerStatus>
       markerIcon: freezed == markerIcon
           ? _value.markerIcon
           : markerIcon // ignore: cast_nullable_to_non_nullable
-              as AssetMapBitmap?,
+              as BitmapDescriptor?,
     ) as $Val);
   }
 }
@@ -82,7 +82,7 @@ abstract class _$$MarkerStatusImplCopyWith<$Res>
   $Res call(
       {List<LatLng> markers,
       bool readyToShowMarkers,
-      AssetMapBitmap? markerIcon});
+      BitmapDescriptor? markerIcon});
 }
 
 /// @nodoc
@@ -112,7 +112,7 @@ class __$$MarkerStatusImplCopyWithImpl<$Res>
       markerIcon: freezed == markerIcon
           ? _value.markerIcon
           : markerIcon // ignore: cast_nullable_to_non_nullable
-              as AssetMapBitmap?,
+              as BitmapDescriptor?,
     ));
   }
 }
@@ -140,7 +140,7 @@ class _$MarkerStatusImpl implements _MarkerStatus {
   final bool readyToShowMarkers;
   @override
   @JsonKey()
-  final AssetMapBitmap? markerIcon;
+  final BitmapDescriptor? markerIcon;
 
   @override
   String toString() {
@@ -177,14 +177,14 @@ abstract class _MarkerStatus implements MapMarkerStatus {
   const factory _MarkerStatus(
       {final List<LatLng> markers,
       final bool readyToShowMarkers,
-      final AssetMapBitmap? markerIcon}) = _$MarkerStatusImpl;
+      final BitmapDescriptor? markerIcon}) = _$MarkerStatusImpl;
 
   @override
   List<LatLng> get markers;
   @override
   bool get readyToShowMarkers;
   @override
-  AssetMapBitmap? get markerIcon;
+  BitmapDescriptor? get markerIcon;
   @override
   @JsonKey(ignore: true)
   _$$MarkerStatusImplCopyWith<_$MarkerStatusImpl> get copyWith =>

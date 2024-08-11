@@ -8,6 +8,6 @@ class MapMarkerStatus with _$MapMarkerStatus {
   const factory MapMarkerStatus({
     @Default([]) List<LatLng> markers,
     @Default(false) bool readyToShowMarkers,
-    @Default(null) AssetMapBitmap? markerIcon,
+    @Default(null) BitmapDescriptor? markerIcon,
   }) = _MarkerStatus;
 }
