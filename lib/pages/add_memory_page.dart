@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:memories/providers/memories.dart';
 
 import '../providers/providers.dart';
 
@@ -34,6 +35,22 @@ class AddMemoryPage extends HookConsumerWidget {
       child: Scaffold(
         appBar: AppBar(
           title: const Text('思い出を追加'),
+          actions: [
+            TextButton(
+              onPressed: () async {
+                await ref.read(memoriesProvider.notifier).add(
+                      title: 'title',
+                      contents: 'contents',
+                      location: location.value,
+                      happenedAt: DateTime.now(),
+                    );
+                if (context.mounted) {
+                  Navigator.of(context).pop();
+                }
+              },
+              child: const Text('保存'),
+            ),
+          ],
         ),
         body: const Center(
           child: Text('Add Memory'),

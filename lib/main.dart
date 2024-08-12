@@ -10,6 +10,7 @@ import 'package:memories/pages/add_memory_page.dart';
 import 'package:memories/pages/home.dart';
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
