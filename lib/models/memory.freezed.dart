@@ -19,7 +19,7 @@ mixin _$Memory {
   String get id => throw _privateConstructorUsedError;
   String get userId => throw _privateConstructorUsedError;
   GeoPoint get location => throw _privateConstructorUsedError;
-  DateTime get createdAt => throw _privateConstructorUsedError;
+  DateTime get happenedAt => throw _privateConstructorUsedError;
   DateTime get updatedAt => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String get contents => throw _privateConstructorUsedError;
@@ -38,7 +38,7 @@ abstract class $MemoryCopyWith<$Res> {
       {String id,
       String userId,
       GeoPoint location,
-      DateTime createdAt,
+      DateTime happenedAt,
       DateTime updatedAt,
       String title,
       String contents,
@@ -61,7 +61,7 @@ class _$MemoryCopyWithImpl<$Res, $Val extends Memory>
     Object? id = null,
     Object? userId = null,
     Object? location = null,
-    Object? createdAt = null,
+    Object? happenedAt = null,
     Object? updatedAt = null,
     Object? title = null,
     Object? contents = null,
@@ -80,9 +80,9 @@ class _$MemoryCopyWithImpl<$Res, $Val extends Memory>
           ? _value.location
           : location // ignore: cast_nullable_to_non_nullable
               as GeoPoint,
-      createdAt: null == createdAt
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
+      happenedAt: null == happenedAt
+          ? _value.happenedAt
+          : happenedAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
       updatedAt: null == updatedAt
           ? _value.updatedAt
@@ -115,7 +115,7 @@ abstract class _$$MemoryImplCopyWith<$Res> implements $MemoryCopyWith<$Res> {
       {String id,
       String userId,
       GeoPoint location,
-      DateTime createdAt,
+      DateTime happenedAt,
       DateTime updatedAt,
       String title,
       String contents,
@@ -136,7 +136,7 @@ class __$$MemoryImplCopyWithImpl<$Res>
     Object? id = null,
     Object? userId = null,
     Object? location = null,
-    Object? createdAt = null,
+    Object? happenedAt = null,
     Object? updatedAt = null,
     Object? title = null,
     Object? contents = null,
@@ -155,9 +155,9 @@ class __$$MemoryImplCopyWithImpl<$Res>
           ? _value.location
           : location // ignore: cast_nullable_to_non_nullable
               as GeoPoint,
-      createdAt: null == createdAt
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
+      happenedAt: null == happenedAt
+          ? _value.happenedAt
+          : happenedAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
       updatedAt: null == updatedAt
           ? _value.updatedAt
@@ -186,7 +186,7 @@ class _$MemoryImpl implements _Memory {
       {required this.id,
       required this.userId,
       required this.location,
-      required this.createdAt,
+      required this.happenedAt,
       required this.updatedAt,
       required this.title,
       required this.contents,
@@ -200,7 +200,7 @@ class _$MemoryImpl implements _Memory {
   @override
   final GeoPoint location;
   @override
-  final DateTime createdAt;
+  final DateTime happenedAt;
   @override
   final DateTime updatedAt;
   @override
@@ -218,7 +218,7 @@ class _$MemoryImpl implements _Memory {
 
   @override
   String toString() {
-    return 'Memory(id: $id, userId: $userId, location: $location, createdAt: $createdAt, updatedAt: $updatedAt, title: $title, contents: $contents, images: $images)';
+    return 'Memory(id: $id, userId: $userId, location: $location, happenedAt: $happenedAt, updatedAt: $updatedAt, title: $title, contents: $contents, images: $images)';
   }
 
   @override
@@ -230,8 +230,8 @@ class _$MemoryImpl implements _Memory {
             (identical(other.userId, userId) || other.userId == userId) &&
             (identical(other.location, location) ||
                 other.location == location) &&
-            (identical(other.createdAt, createdAt) ||
-                other.createdAt == createdAt) &&
+            (identical(other.happenedAt, happenedAt) ||
+                other.happenedAt == happenedAt) &&
             (identical(other.updatedAt, updatedAt) ||
                 other.updatedAt == updatedAt) &&
             (identical(other.title, title) || other.title == title) &&
@@ -241,7 +241,7 @@ class _$MemoryImpl implements _Memory {
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, id, userId, location, createdAt,
+  int get hashCode => Object.hash(runtimeType, id, userId, location, happenedAt,
       updatedAt, title, contents, const DeepCollectionEquality().hash(_images));
 
   @JsonKey(ignore: true)
@@ -256,7 +256,7 @@ abstract class _Memory implements Memory {
       {required final String id,
       required final String userId,
       required final GeoPoint location,
-      required final DateTime createdAt,
+      required final DateTime happenedAt,
       required final DateTime updatedAt,
       required final String title,
       required final String contents,
@@ -269,7 +269,7 @@ abstract class _Memory implements Memory {
   @override
   GeoPoint get location;
   @override
-  DateTime get createdAt;
+  DateTime get happenedAt;
   @override
   DateTime get updatedAt;
   @override

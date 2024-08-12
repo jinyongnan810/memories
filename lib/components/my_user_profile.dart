@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../providers/providers.dart';
+import 'components.dart';
 
 class MyUserProfile extends ConsumerWidget {
   const MyUserProfile({super.key});
@@ -12,8 +13,8 @@ class MyUserProfile extends ConsumerWidget {
 
     if (loginStatus.userId != null) {
       return GestureDetector(
-        onDoubleTap: () {
-          ref.read(loginStatusProvider.notifier).logout();
+        onTap: () {
+          showAccountSheet(context);
         },
         child: CircleAvatar(
           radius: 20,
@@ -25,11 +26,11 @@ class MyUserProfile extends ConsumerWidget {
         ),
       );
     }
-    return IconButton(
+    return TextButton(
       onPressed: () async {
         await ref.read(loginStatusProvider.notifier).login();
       },
-      icon: const Icon(Icons.person),
+      child: const Text('ログイン'),
     );
   }
 }

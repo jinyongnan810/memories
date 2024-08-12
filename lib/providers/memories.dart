@@ -25,7 +25,7 @@ class Memories extends _$Memories {
         id: e.id,
         userId: userId,
         location: data['location'] as GeoPoint,
-        createdAt: (data['createdAt'] as Timestamp).toDate(),
+        happenedAt: (data['happenedAt'] as Timestamp).toDate(),
         updatedAt: (data['updatedAt'] as Timestamp).toDate(),
         title: data['title'] as String,
         contents: data['contents'] as String,

@@ -11,7 +11,7 @@ class Home extends ConsumerWidget {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: const Text('Memories'),
+        title: const Text('思い出の星空'),
         backgroundColor: Colors.black.withOpacity(0.2),
         elevation: 0,
         actions: const [

@@ -6,7 +6,7 @@ part of 'memories.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$memoriesHash() => r'b29b6252ec0de61019a828a397a7df76e5112055';
+String _$memoriesHash() => r'b59f151069527666857d4a7ab085a82a9315105f';
 
 /// See also [Memories].
 @ProviderFor(Memories)

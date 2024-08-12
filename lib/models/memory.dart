@@ -9,7 +9,7 @@ class Memory with _$Memory {
     required String id,
     required String userId,
     required GeoPoint location,
-    required DateTime createdAt,
+    required DateTime happenedAt,
     required DateTime updatedAt,
     required String title,
     required String contents,
