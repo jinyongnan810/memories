@@ -9,11 +9,11 @@ class Home extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      extendBodyBehindAppBar: true,
+      // extendBodyBehindAppBar: true,
       appBar: AppBar(
         title: const Text('思い出の星空'),
-        backgroundColor: Colors.black.withOpacity(0.2),
-        elevation: 0,
+        // backgroundColor: Colors.transparent,
+        // elevation: 0,
         actions: const [
           MyUserProfile(),
           SizedBox(
