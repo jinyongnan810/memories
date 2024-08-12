@@ -28,7 +28,7 @@
 - [ ] Create memories based on location
 - [x] Read memories based on location
 - [ ] Show all user's memories
-- [ ] Splash screen
+- [x] Splash screen
 
 ### Step 2
 - [ ] Add friends
