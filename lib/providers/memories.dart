@@ -1,3 +1,4 @@
+// ignore_for_file: avoid_manual_providers_as_generated_provider_dependency
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:memories/models/memory.dart';
 import 'package:memories/providers/auth_providers.dart';
@@ -35,5 +36,44 @@ class Memories extends _$Memories {
       return memory;
     }).toList();
     return memories;
+  }
+
+  Future<void> add({
+    required String title,
+    required String contents,
+    required GeoPoint location,
+    required DateTime happenedAt,
+  }) async {
+    final userId = ref.watch(loginStatusProvider.select((v) => v.userId));
+    if (userId == null) {
+      return;
+    }
+    final result = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(userId)
+        .collection('memories')
+        .add({
+      'location': location,
+      'happenedAt': Timestamp.fromDate(happenedAt),
+      'updatedAt': Timestamp.now(),
+      'title': title,
+      'contents': contents,
+      'images': [],
+    });
+
+    print('⭐️ result: $result');
+    state = AsyncData([
+      ...state.valueOrNull ?? [],
+      Memory(
+        id: result.id,
+        userId: userId,
+        location: location,
+        happenedAt: happenedAt,
+        updatedAt: DateTime.now(),
+        title: title,
+        contents: contents,
+        images: [],
+      ),
+    ]);
   }
 }

@@ -1,3 +1,4 @@
+// ignore_for_file: avoid_manual_providers_as_generated_provider_dependency
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:memories/models/map_marker_status.dart';
 import 'package:memories/providers/map_providers.dart';

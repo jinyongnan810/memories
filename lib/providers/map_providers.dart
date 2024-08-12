@@ -47,6 +47,7 @@ Future<ByteData> createCustomMarkerIconImage({
   return bytes!;
 }
 
+// TODO(kin): 今星が目的地の上に表示されているので、なんとかしたい。
 class _MarkerPainter extends CustomPainter {
   _MarkerPainter({required this.colors});
 

@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../providers/providers.dart';
@@ -24,7 +26,8 @@ class MapView extends ConsumerWidget {
       initialCameraPosition: _initialPosition,
       onMapCreated: _controller.complete,
       onTap: (latLng) {
-        ref.read(mapMarkerProvider.notifier).addMarker(latLng);
+        GoRouter.of(context)
+            .go('/add', extra: GeoPoint(latLng.latitude, latLng.longitude));
       },
       // TODO(me): 自分の場所に移動できるようにする
       // myLocationEnabled: true,
