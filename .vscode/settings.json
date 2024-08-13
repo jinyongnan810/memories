@@ -1,5 +1,12 @@
 {
   "cmake.ignoreCMakeListsMissing": true,
   "dart.flutterSdkPath": "~/.asdf/installs/flutter/3.22.1-stable",
-  "cSpell.words": ["Firestore", "riverpod", "todos", "unawaited"]
+  "cSpell.words": [
+    "datetime",
+    "Firestore",
+    "Omni",
+    "riverpod",
+    "todos",
+    "unawaited"
+  ]
 }
