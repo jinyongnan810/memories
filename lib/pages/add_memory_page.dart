@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_quill/flutter_quill.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -19,8 +22,8 @@ class AddMemoryPage extends HookConsumerWidget {
     final location = useState<GeoPoint>(const GeoPoint(0, 0));
     final startDateTime = useState<DateTime?>(null);
     final endDateTime = useState<DateTime?>(null);
-    final titile = useState<String>('');
-    final contents = useState<String>('');
+    final title = useState<String>('');
+    final controller = useMemoized(QuillController.basic);
     useEffect(
       () {
         Future(() {
@@ -35,7 +38,7 @@ class AddMemoryPage extends HookConsumerWidget {
           location.value = GoRouterState.of(context).extra! as GeoPoint;
         });
 
-        return null;
+        return controller.dispose;
       },
       [],
     );
@@ -48,7 +51,8 @@ class AddMemoryPage extends HookConsumerWidget {
               onPressed: () async {
                 await ref.read(memoriesProvider.notifier).add(
                       title: 'title',
-                      contents: 'contents',
+                      contents:
+                          jsonEncode(controller.document.toDelta().toJson()),
                       location: location.value,
                       happenedAt: DateTime.now(),
                     );
@@ -60,19 +64,20 @@ class AddMemoryPage extends HookConsumerWidget {
             ),
           ],
         ),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _PickDateArea(
-                  startDateTime: startDateTime,
-                  endDateTime: endDateTime,
-                ),
-                const Divider(),
-              ],
-            ),
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _PickDateArea(
+                startDateTime: startDateTime,
+                endDateTime: endDateTime,
+              ),
+              const SizedBox(height: 12),
+              const Divider(),
+              const SizedBox(height: 12),
+              Expanded(child: _Contents(controller: controller)),
+            ],
           ),
         ),
       ),
@@ -88,8 +93,7 @@ class _PickDateArea extends StatelessWidget {
   Widget build(BuildContext context) {
     final start = startDateTime.value;
     final end = endDateTime.value;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return Row(
       children: [
         ElevatedButton.icon(
           onPressed: () async {
@@ -118,11 +122,68 @@ class _PickDateArea extends StatelessWidget {
           icon: const Icon(Icons.calendar_today),
         ),
         if (start != null && end != null) ...[
-          const SizedBox(height: 8),
+          const SizedBox(width: 8),
           Text(
             '${formatter.format(start)} ~ ${formatter.format(end)}',
           ),
         ],
+      ],
+    );
+  }
+}
+
+class _Contents extends HookWidget {
+  const _Contents({required this.controller});
+  final QuillController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    final focusNode = useFocusNode();
+
+    return Column(
+      children: [
+        QuillSimpleToolbar(
+          configurations: QuillSimpleToolbarConfigurations(
+            controller: controller,
+            sharedConfigurations: const QuillSharedConfigurations(
+              locale: Locale('ja', 'JP'),
+            ),
+            showFontFamily: false,
+            showBackgroundColorButton: false,
+            showSubscript: false,
+            showSuperscript: false,
+            showInlineCode: false,
+            showItalicButton: false,
+            showUnderLineButton: false,
+            showCodeBlock: false,
+            showDividers: false,
+            multiRowsDisplay: false,
+            buttonOptions: QuillSimpleToolbarButtonOptions(
+              base: QuillToolbarBaseButtonOptions(
+                afterButtonPressed: focusNode.requestFocus,
+              ),
+              fontSize: const QuillToolbarFontSizeButtonOptions(
+                defaultDisplayText: 'サイズ',
+              ),
+            ),
+            fontSizesValues: const {
+              'Small': '12',
+              'Medium': '24',
+              'Large': '48',
+            },
+          ),
+        ),
+        Expanded(
+          child: QuillEditor.basic(
+            configurations: QuillEditorConfigurations(
+              controller: controller,
+              sharedConfigurations: const QuillSharedConfigurations(
+                locale: Locale('ja', 'JP'),
+              ),
+            ),
+            focusNode: focusNode,
+          ),
+        ),
       ],
     );
   }
