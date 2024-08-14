@@ -14,6 +14,7 @@ import '../providers/providers.dart';
 
 final DateFormat formatter = DateFormat('yyyy/MM/dd HH:mm');
 
+// TODO(kin): この画面をに画面に分離する
 class AddMemoryPage extends HookConsumerWidget {
   const AddMemoryPage({super.key});
 
@@ -31,7 +32,6 @@ class AddMemoryPage extends HookConsumerWidget {
     useEffect(
       () {
         Future(() {
-          titleFocusNode.requestFocus();
           if (ref.read(loginStatusProvider).userId == null) {
             Navigator.of(context).pop();
             return;
@@ -40,6 +40,7 @@ class AddMemoryPage extends HookConsumerWidget {
             Navigator.of(context).pop();
             return;
           }
+          titleFocusNode.requestFocus();
           location.value = GoRouterState.of(context).extra! as GeoPoint;
         });
 

@@ -26,6 +26,9 @@ class MapView extends ConsumerWidget {
       initialCameraPosition: _initialPosition,
       onMapCreated: _controller.complete,
       onTap: (latLng) {
+        if (ref.read(loginStatusProvider).userId == null) {
+          return;
+        }
         GoRouter.of(context)
             .go('/add', extra: GeoPoint(latLng.latitude, latLng.longitude));
       },
