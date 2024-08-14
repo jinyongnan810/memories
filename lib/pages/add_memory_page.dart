@@ -23,10 +23,15 @@ class AddMemoryPage extends HookConsumerWidget {
     final startDateTime = useState<DateTime?>(null);
     final endDateTime = useState<DateTime?>(null);
     final title = useState<String>('');
-    final controller = useMemoized(QuillController.basic);
+    final titleFocusNode = useFocusNode();
+    final contentsFocusNode = useFocusNode();
+    final controller = useMemoized(
+      () => QuillController.basic(editorFocusNode: contentsFocusNode),
+    );
     useEffect(
       () {
         Future(() {
+          titleFocusNode.requestFocus();
           if (ref.read(loginStatusProvider).userId == null) {
             Navigator.of(context).pop();
             return;
@@ -45,12 +50,30 @@ class AddMemoryPage extends HookConsumerWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('思い出を追加'),
+          title: TextField(
+            focusNode: titleFocusNode,
+            decoration: const InputDecoration(hintText: '思い出のタイトル'),
+            onChanged: (value) => title.value = value,
+          ),
           actions: [
             TextButton(
               onPressed: () async {
+                if (title.value.isEmpty) {
+                  showSnackbar(context, 'タイトルが入力されていません。');
+                  titleFocusNode.requestFocus();
+                  return;
+                }
+                if (startDateTime.value == null || endDateTime.value == null) {
+                  showSnackbar(context, '思い出の期間が設定されていません。');
+                  return;
+                }
+                if (controller.document.isEmpty()) {
+                  showSnackbar(context, '思い出の詳細が入力されていません。');
+                  contentsFocusNode.requestFocus();
+                  return;
+                }
                 await ref.read(memoriesProvider.notifier).add(
-                      title: 'title',
+                      title: title.value,
                       contents:
                           jsonEncode(controller.document.toDelta().toJson()),
                       location: location.value,
@@ -83,6 +106,14 @@ class AddMemoryPage extends HookConsumerWidget {
       ),
     );
   }
+
+  void showSnackbar(BuildContext context, String text) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(text),
+      ),
+    );
+  }
 }
 
 class _PickDateArea extends StatelessWidget {
@@ -93,7 +124,7 @@ class _PickDateArea extends StatelessWidget {
   Widget build(BuildContext context) {
     final start = startDateTime.value;
     final end = endDateTime.value;
-    return Row(
+    return Column(
       children: [
         ElevatedButton.icon(
           onPressed: () async {
@@ -122,7 +153,7 @@ class _PickDateArea extends StatelessWidget {
           icon: const Icon(Icons.calendar_today),
         ),
         if (start != null && end != null) ...[
-          const SizedBox(width: 8),
+          const SizedBox(height: 8),
           Text(
             '${formatter.format(start)} ~ ${formatter.format(end)}',
           ),
@@ -138,8 +169,6 @@ class _Contents extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final focusNode = useFocusNode();
-
     return Column(
       children: [
         QuillSimpleToolbar(
@@ -160,7 +189,7 @@ class _Contents extends HookWidget {
             multiRowsDisplay: false,
             buttonOptions: QuillSimpleToolbarButtonOptions(
               base: QuillToolbarBaseButtonOptions(
-                afterButtonPressed: focusNode.requestFocus,
+                afterButtonPressed: controller.editorFocusNode?.requestFocus,
               ),
               fontSize: const QuillToolbarFontSizeButtonOptions(
                 defaultDisplayText: 'サイズ',
@@ -173,15 +202,17 @@ class _Contents extends HookWidget {
             },
           ),
         ),
+        const SizedBox(height: 32),
         Expanded(
           child: QuillEditor.basic(
             configurations: QuillEditorConfigurations(
+              placeholder: 'どんな思い出でしたか？',
               controller: controller,
               sharedConfigurations: const QuillSharedConfigurations(
                 locale: Locale('ja', 'JP'),
               ),
             ),
-            focusNode: focusNode,
+            focusNode: controller.editorFocusNode,
           ),
         ),
       ],
