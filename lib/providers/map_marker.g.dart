@@ -6,7 +6,7 @@ part of 'map_marker.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$mapMarkerHash() => r'ea5dcb9141b529e1226e5aa30b430ba311c83d5e';
+String _$mapMarkerHash() => r'81776c4293bee112bb481bbc3bdf646b29014271';
 
 /// See also [MapMarker].
 @ProviderFor(MapMarker)

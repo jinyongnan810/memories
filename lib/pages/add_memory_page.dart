@@ -10,13 +10,11 @@ import 'package:flutter_quill/flutter_quill.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:intl/intl.dart';
+import 'package:memories/components/helper/durationHelper.dart';
 import 'package:memories/providers/memories.dart';
 import 'package:omni_datetime_picker/omni_datetime_picker.dart';
 
 import '../providers/providers.dart';
-
-final DateFormat formatter = DateFormat('yyyy/MM/dd HH:mm');
 
 // TODO(kin): この画面をに画面に分離する
 class AddMemoryPage extends HookConsumerWidget {
@@ -161,7 +159,7 @@ class _PickDateArea extends StatelessWidget {
         if (start != null && end != null) ...[
           const SizedBox(height: 8),
           Text(
-            '${formatter.format(start)} ~ ${formatter.format(end)}',
+            durationString(start, end),
           ),
         ],
       ],
@@ -206,8 +204,9 @@ class _ContentsState extends ConsumerState<_Contents> {
           BlockEmbed.image(downloadUrl),
           TextSelection.collapsed(offset: index + 1),
         );
+        // ignore: avoid_catches_without_on_clauses
       } catch (e) {
-        print('Error uploading image: $e');
+        ref.read(loggerProvider).e('Error uploading image: $e');
       }
     }
   }

@@ -28,15 +28,13 @@ class _Sheet extends ConsumerWidget {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            InkWell(
+            ListTile(
+              leading: const Icon(Icons.logout),
+              title: const Text('ログアウト'),
               onTap: () {
                 ref.read(loginStatusProvider.notifier).logout();
                 Navigator.of(context).pop();
               },
-              child: const ListTile(
-                leading: Icon(Icons.logout),
-                title: Text('ログアウト'),
-              ),
             ),
           ],
         ),

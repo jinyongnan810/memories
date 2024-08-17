@@ -16,9 +16,10 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$MapMarkerStatus {
-  List<LatLng> get markers => throw _privateConstructorUsedError;
+  Set<Marker> get markers => throw _privateConstructorUsedError;
   bool get readyToShowMarkers => throw _privateConstructorUsedError;
   BitmapDescriptor? get markerIcon => throw _privateConstructorUsedError;
+  GeoPoint? get selectedLocation => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $MapMarkerStatusCopyWith<MapMarkerStatus> get copyWith =>
@@ -32,9 +33,10 @@ abstract class $MapMarkerStatusCopyWith<$Res> {
       _$MapMarkerStatusCopyWithImpl<$Res, MapMarkerStatus>;
   @useResult
   $Res call(
-      {List<LatLng> markers,
+      {Set<Marker> markers,
       bool readyToShowMarkers,
-      BitmapDescriptor? markerIcon});
+      BitmapDescriptor? markerIcon,
+      GeoPoint? selectedLocation});
 }
 
 /// @nodoc
@@ -53,12 +55,13 @@ class _$MapMarkerStatusCopyWithImpl<$Res, $Val extends MapMarkerStatus>
     Object? markers = null,
     Object? readyToShowMarkers = null,
     Object? markerIcon = freezed,
+    Object? selectedLocation = freezed,
   }) {
     return _then(_value.copyWith(
       markers: null == markers
           ? _value.markers
           : markers // ignore: cast_nullable_to_non_nullable
-              as List<LatLng>,
+              as Set<Marker>,
       readyToShowMarkers: null == readyToShowMarkers
           ? _value.readyToShowMarkers
           : readyToShowMarkers // ignore: cast_nullable_to_non_nullable
@@ -67,6 +70,10 @@ class _$MapMarkerStatusCopyWithImpl<$Res, $Val extends MapMarkerStatus>
           ? _value.markerIcon
           : markerIcon // ignore: cast_nullable_to_non_nullable
               as BitmapDescriptor?,
+      selectedLocation: freezed == selectedLocation
+          ? _value.selectedLocation
+          : selectedLocation // ignore: cast_nullable_to_non_nullable
+              as GeoPoint?,
     ) as $Val);
   }
 }
@@ -80,9 +87,10 @@ abstract class _$$MarkerStatusImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {List<LatLng> markers,
+      {Set<Marker> markers,
       bool readyToShowMarkers,
-      BitmapDescriptor? markerIcon});
+      BitmapDescriptor? markerIcon,
+      GeoPoint? selectedLocation});
 }
 
 /// @nodoc
@@ -99,12 +107,13 @@ class __$$MarkerStatusImplCopyWithImpl<$Res>
     Object? markers = null,
     Object? readyToShowMarkers = null,
     Object? markerIcon = freezed,
+    Object? selectedLocation = freezed,
   }) {
     return _then(_$MarkerStatusImpl(
       markers: null == markers
           ? _value._markers
           : markers // ignore: cast_nullable_to_non_nullable
-              as List<LatLng>,
+              as Set<Marker>,
       readyToShowMarkers: null == readyToShowMarkers
           ? _value.readyToShowMarkers
           : readyToShowMarkers // ignore: cast_nullable_to_non_nullable
@@ -113,6 +122,10 @@ class __$$MarkerStatusImplCopyWithImpl<$Res>
           ? _value.markerIcon
           : markerIcon // ignore: cast_nullable_to_non_nullable
               as BitmapDescriptor?,
+      selectedLocation: freezed == selectedLocation
+          ? _value.selectedLocation
+          : selectedLocation // ignore: cast_nullable_to_non_nullable
+              as GeoPoint?,
     ));
   }
 }
@@ -121,18 +134,19 @@ class __$$MarkerStatusImplCopyWithImpl<$Res>
 
 class _$MarkerStatusImpl implements _MarkerStatus {
   const _$MarkerStatusImpl(
-      {final List<LatLng> markers = const [],
+      {final Set<Marker> markers = const {},
       this.readyToShowMarkers = false,
-      this.markerIcon = null})
+      this.markerIcon = null,
+      this.selectedLocation = null})
       : _markers = markers;
 
-  final List<LatLng> _markers;
+  final Set<Marker> _markers;
   @override
   @JsonKey()
-  List<LatLng> get markers {
-    if (_markers is EqualUnmodifiableListView) return _markers;
+  Set<Marker> get markers {
+    if (_markers is EqualUnmodifiableSetView) return _markers;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_markers);
+    return EqualUnmodifiableSetView(_markers);
   }
 
   @override
@@ -141,10 +155,13 @@ class _$MarkerStatusImpl implements _MarkerStatus {
   @override
   @JsonKey()
   final BitmapDescriptor? markerIcon;
+  @override
+  @JsonKey()
+  final GeoPoint? selectedLocation;
 
   @override
   String toString() {
-    return 'MapMarkerStatus(markers: $markers, readyToShowMarkers: $readyToShowMarkers, markerIcon: $markerIcon)';
+    return 'MapMarkerStatus(markers: $markers, readyToShowMarkers: $readyToShowMarkers, markerIcon: $markerIcon, selectedLocation: $selectedLocation)';
   }
 
   @override
@@ -156,7 +173,9 @@ class _$MarkerStatusImpl implements _MarkerStatus {
             (identical(other.readyToShowMarkers, readyToShowMarkers) ||
                 other.readyToShowMarkers == readyToShowMarkers) &&
             (identical(other.markerIcon, markerIcon) ||
-                other.markerIcon == markerIcon));
+                other.markerIcon == markerIcon) &&
+            (identical(other.selectedLocation, selectedLocation) ||
+                other.selectedLocation == selectedLocation));
   }
 
   @override
@@ -164,7 +183,8 @@ class _$MarkerStatusImpl implements _MarkerStatus {
       runtimeType,
       const DeepCollectionEquality().hash(_markers),
       readyToShowMarkers,
-      markerIcon);
+      markerIcon,
+      selectedLocation);
 
   @JsonKey(ignore: true)
   @override
@@ -175,16 +195,19 @@ class _$MarkerStatusImpl implements _MarkerStatus {
 
 abstract class _MarkerStatus implements MapMarkerStatus {
   const factory _MarkerStatus(
-      {final List<LatLng> markers,
+      {final Set<Marker> markers,
       final bool readyToShowMarkers,
-      final BitmapDescriptor? markerIcon}) = _$MarkerStatusImpl;
+      final BitmapDescriptor? markerIcon,
+      final GeoPoint? selectedLocation}) = _$MarkerStatusImpl;
 
   @override
-  List<LatLng> get markers;
+  Set<Marker> get markers;
   @override
   bool get readyToShowMarkers;
   @override
   BitmapDescriptor? get markerIcon;
+  @override
+  GeoPoint? get selectedLocation;
   @override
   @JsonKey(ignore: true)
   _$$MarkerStatusImplCopyWith<_$MarkerStatusImpl> get copyWith =>
