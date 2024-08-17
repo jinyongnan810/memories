@@ -11,16 +11,33 @@ final markerIconProvider = FutureProvider((ref) async {
     mainColor: Colors.orange,
     secondaryColor: Colors.white,
   );
+  const selectedColors = (
+    mainColor: Colors.white,
+    secondaryColor: Colors.orange,
+  );
   const size = 50.0;
   final bytes = await createCustomMarkerIconImage(
     colors: colors,
     size: const Size(size, size),
   );
-  return BitmapDescriptor.bytes(
-    bytes.buffer.asUint8List(),
-    imagePixelRatio: 1,
-    width: size,
-    height: size,
+  final selectedBytes = await createCustomMarkerIconImage(
+    colors: selectedColors,
+    size: const Size(size, size),
+  );
+
+  return (
+    normal: BitmapDescriptor.bytes(
+      bytes.buffer.asUint8List(),
+      imagePixelRatio: 1,
+      width: size,
+      height: size,
+    ),
+    selected: BitmapDescriptor.bytes(
+      selectedBytes.buffer.asUint8List(),
+      imagePixelRatio: 1,
+      width: size,
+      height: size,
+    )
   );
   // return BitmapDescriptor.asset(
   //   ImageConfiguration.empty,

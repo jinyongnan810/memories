@@ -10,6 +10,7 @@ class MapMarkerStatus with _$MapMarkerStatus {
     @Default({}) Set<Marker> markers,
     @Default(false) bool readyToShowMarkers,
     @Default(null) BitmapDescriptor? markerIcon,
+    @Default(null) BitmapDescriptor? selectedMarkerIcon,
     @Default(null) GeoPoint? selectedLocation,
   }) = _MarkerStatus;
 }

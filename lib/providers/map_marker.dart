@@ -17,7 +17,8 @@ class MapMarker extends _$MapMarker {
         if (prev != next && next.asData?.value != null) {
           state = state.copyWith(
             readyToShowMarkers: true,
-            markerIcon: next.asData!.value,
+            markerIcon: next.asData!.value.normal,
+            selectedMarkerIcon: next.asData!.value.selected,
           );
         }
       })

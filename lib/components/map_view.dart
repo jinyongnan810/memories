@@ -19,7 +19,7 @@ class MapView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final mapMarkerStatus = ref.watch(mapMarkerProvider);
-    print('selectedLocation: ${mapMarkerStatus.selectedLocation}');
+    final selectedLocation = mapMarkerStatus.selectedLocation;
     return GoogleMap(
       mapType: MapType.hybrid,
       initialCameraPosition: _initialPosition,
@@ -37,8 +37,21 @@ class MapView extends ConsumerWidget {
             },
       // TODO(me): 自分の場所に移動できるようにする
       // myLocationEnabled: true,
-      markers:
-          mapMarkerStatus.readyToShowMarkers ? mapMarkerStatus.markers : {},
+      markers: mapMarkerStatus.readyToShowMarkers
+          ? {
+              ...mapMarkerStatus.markers,
+              if (selectedLocation != null)
+                Marker(
+                  markerId: const MarkerId('temp'),
+                  position: LatLng(
+                    selectedLocation.latitude,
+                    selectedLocation.longitude,
+                  ),
+                  icon: mapMarkerStatus.selectedMarkerIcon ??
+                      BitmapDescriptor.defaultMarker,
+                ),
+            }
+          : {},
     );
   }
 }
