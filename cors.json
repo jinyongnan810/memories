@@ -1,0 +1,11 @@
+[
+  {
+    "origin": [
+      "https://memories-f3a84.web.app",
+      "https://memories-f3a84.firebaseapp.com",
+      "http://localhost:1234"
+    ],
+    "method": ["GET"],
+    "maxAgeSeconds": 86400
+  }
+]

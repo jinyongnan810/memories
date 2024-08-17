@@ -27,13 +27,11 @@ class Memories extends _$Memories {
           id: e.id,
           userId: userId,
           location: data['location'] as GeoPoint,
-          happenedAt: (data['happenedAt'] as Timestamp).toDate(),
+          startAt: (data['startAt'] as Timestamp).toDate(),
+          endAt: (data['endAt'] as Timestamp).toDate(),
           updatedAt: (data['updatedAt'] as Timestamp).toDate(),
           title: data['title'] as String,
           contents: data['contents'] as String,
-          images: (data['images'] as List<dynamic>)
-              .map((e) => e as String)
-              .toList(),
         );
         return memory;
       }).toList();
@@ -49,7 +47,8 @@ class Memories extends _$Memories {
     required String title,
     required String contents,
     required GeoPoint location,
-    required DateTime happenedAt,
+    required DateTime startAt,
+    required DateTime endAt,
   }) async {
     final userId = ref.watch(loginStatusProvider.select((v) => v.userId));
     if (userId == null) {
@@ -62,7 +61,8 @@ class Memories extends _$Memories {
           .collection('memories')
           .add({
         'location': location,
-        'happenedAt': Timestamp.fromDate(happenedAt),
+        'startAt': Timestamp.fromDate(startAt),
+        'endAt': Timestamp.fromDate(endAt),
         'updatedAt': Timestamp.now(),
         'title': title,
         'contents': contents,
@@ -75,11 +75,11 @@ class Memories extends _$Memories {
           id: result.id,
           userId: userId,
           location: location,
-          happenedAt: happenedAt,
+          startAt: startAt,
+          endAt: endAt,
           updatedAt: DateTime.now(),
           title: title,
           contents: contents,
-          images: [],
         ),
       ]);
       // ignore: avoid_catches_without_on_clauses

@@ -1,11 +1,15 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:memories/providers/memories.dart';
 import 'package:omni_datetime_picker/omni_datetime_picker.dart';
@@ -78,7 +82,8 @@ class AddMemoryPage extends HookConsumerWidget {
                       contents:
                           jsonEncode(controller.document.toDelta().toJson()),
                       location: location.value,
-                      happenedAt: DateTime.now(),
+                      startAt: startDateTime.value!,
+                      endAt: endDateTime.value!,
                     );
                 if (context.mounted) {
                   Navigator.of(context).pop();
@@ -164,9 +169,48 @@ class _PickDateArea extends StatelessWidget {
   }
 }
 
-class _Contents extends HookWidget {
+class _Contents extends StatefulHookConsumerWidget {
   const _Contents({required this.controller});
   final QuillController controller;
+
+  @override
+  ConsumerState<_Contents> createState() => _ContentsState();
+}
+
+class _ContentsState extends ConsumerState<_Contents> {
+  Future<void> _pickImageAndUpload() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    final userId = ref.read(loginStatusProvider).userId;
+
+    if (pickedFile != null && userId != null) {
+      try {
+        final fileName =
+            'images/$userId/${DateTime.now().millisecondsSinceEpoch}.png';
+        final ref = FirebaseStorage.instance.ref().child(fileName);
+        final uploadTask = () async {
+          if (kIsWeb) {
+            return ref.putData(await pickedFile.readAsBytes());
+          }
+          return ref.putFile(File(pickedFile.path));
+        }();
+        final snapshot = await uploadTask;
+        final downloadUrl = await snapshot.ref.getDownloadURL();
+
+        // Update QuillController with the image
+        final index = widget.controller.selection.baseOffset;
+        final length = widget.controller.selection.extentOffset - index;
+        widget.controller.replaceText(
+          index,
+          length,
+          BlockEmbed.image(downloadUrl),
+          TextSelection.collapsed(offset: index + 1),
+        );
+      } catch (e) {
+        print('Error uploading image: $e');
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -174,10 +218,17 @@ class _Contents extends HookWidget {
       children: [
         QuillSimpleToolbar(
           configurations: QuillSimpleToolbarConfigurations(
-            controller: controller,
+            controller: widget.controller,
             sharedConfigurations: const QuillSharedConfigurations(
               locale: Locale('ja', 'JP'),
             ),
+            customButtons: [
+              QuillToolbarCustomButtonOptions(
+                icon: const Icon(Icons.photo),
+                tooltip: '画像を添付する',
+                onPressed: _pickImageAndUpload,
+              ),
+            ],
             showFontFamily: false,
             showBackgroundColorButton: false,
             showSubscript: false,
@@ -187,10 +238,20 @@ class _Contents extends HookWidget {
             showUnderLineButton: false,
             showCodeBlock: false,
             showDividers: false,
+            showClipboardCopy: false,
+            showIndent: false,
+            showQuote: false,
+            showListBullets: false,
+            showClearFormat: false,
+            showClipboardCut: false,
+            showClipboardPaste: false,
+            showSearchButton: false,
+            showFontSize: false,
             multiRowsDisplay: false,
             buttonOptions: QuillSimpleToolbarButtonOptions(
               base: QuillToolbarBaseButtonOptions(
-                afterButtonPressed: controller.editorFocusNode?.requestFocus,
+                afterButtonPressed:
+                    widget.controller.editorFocusNode?.requestFocus,
               ),
               fontSize: const QuillToolbarFontSizeButtonOptions(
                 defaultDisplayText: 'サイズ',
@@ -203,20 +264,46 @@ class _Contents extends HookWidget {
             },
           ),
         ),
-        const SizedBox(height: 32),
+        const SizedBox(height: 48),
         Expanded(
           child: QuillEditor.basic(
             configurations: QuillEditorConfigurations(
               placeholder: 'どんな思い出でしたか？',
-              controller: controller,
+              controller: widget.controller,
               sharedConfigurations: const QuillSharedConfigurations(
                 locale: Locale('ja', 'JP'),
               ),
+              embedBuilders: const [
+                ImageEmbedBuilder(),
+              ],
             ),
-            focusNode: controller.editorFocusNode,
+            focusNode: widget.controller.editorFocusNode,
           ),
         ),
       ],
     );
+  }
+}
+
+class ImageEmbedBuilder extends EmbedBuilder {
+  const ImageEmbedBuilder();
+
+  @override
+  String get key => BlockEmbed.imageType;
+
+  @override
+  Widget build(
+    BuildContext context,
+    QuillController controller,
+    Embed node,
+    bool readOnly,
+    bool inline,
+    TextStyle textStyle,
+  ) {
+    final src = node.value.data as String?;
+    if (src == null) {
+      return const SizedBox();
+    }
+    return Image.network(src);
   }
 }

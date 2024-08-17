@@ -9,10 +9,10 @@ class Memory with _$Memory {
     required String id,
     required String userId,
     required GeoPoint location,
-    required DateTime happenedAt,
+    required DateTime startAt,
+    required DateTime endAt,
     required DateTime updatedAt,
     required String title,
     required String contents,
-    @Default([]) List<String> images,
   }) = _Memory;
 }
