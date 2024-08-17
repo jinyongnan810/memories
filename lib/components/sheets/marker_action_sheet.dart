@@ -51,7 +51,11 @@ class _Sheet extends HookConsumerWidget {
     final isSignedIn = ref.watch(loginStatusProvider).userId != null;
     final memories = ref.watch(memoriesProvider);
     final sameLocationMemories =
-        memories.valueOrNull?.where((e) => e.location == location);
+        memories.valueOrNull?.where((e) => e.location == location).toList() ??
+            [];
+    final sortedSameLocationMemories = sameLocationMemories
+      ..sort((a, b) => a.startAt.compareTo(b.startAt));
+
     final sheet = DraggableScrollableSheet(
       controller: draggableScrollableController,
       minChildSize: 0,
@@ -90,8 +94,7 @@ class _Sheet extends HookConsumerWidget {
                 },
               ),
               ...[
-                if (sameLocationMemories != null &&
-                    sameLocationMemories.isNotEmpty)
+                if (sortedSameLocationMemories.isNotEmpty)
                   for (final memory in sameLocationMemories)
                     ListTile(
                       leading: const Icon(Icons.star),

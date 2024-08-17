@@ -129,6 +129,7 @@ class _PickDateArea extends StatelessWidget {
     final start = startDateTime.value;
     final end = endDateTime.value;
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ElevatedButton.icon(
           onPressed: () async {
