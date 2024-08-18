@@ -28,13 +28,11 @@ class MapView extends ConsumerWidget {
           ? WebGestureHandling.none
           : WebGestureHandling.auto,
 
-      onTap: mapMarkerStatus.selectedLocation != null
-          ? null
-          : (latLng) {
-              ref.read(mapMarkerProvider.notifier).setSelectedLocation(
-                    GeoPoint(latLng.latitude, latLng.longitude),
-                  );
-            },
+      onTap: (latLng) {
+        ref.read(mapMarkerProvider.notifier).setSelectedLocation(
+              GeoPoint(latLng.latitude, latLng.longitude),
+            );
+      },
       // TODO(me): 自分の場所に移動できるようにする
       // myLocationEnabled: true,
       markers: mapMarkerStatus.readyToShowMarkers

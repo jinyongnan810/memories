@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_portal/flutter_portal.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -28,11 +29,13 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      debugShowCheckedModeBanner: false,
-      title: '思い出の星空',
-      theme: _buildTheme(Brightness.dark),
-      routerConfig: _router,
+    return Portal(
+      child: MaterialApp.router(
+        debugShowCheckedModeBanner: false,
+        title: '思い出の星空',
+        theme: _buildTheme(Brightness.dark),
+        routerConfig: _router,
+      ),
     );
   }
 
