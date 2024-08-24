@@ -10,7 +10,7 @@ import 'package:flutter_quill/flutter_quill.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:memories/components/helper/durationHelper.dart';
+import 'package:memories/components/helper/duration_helper.dart';
 import 'package:memories/providers/memories.dart';
 import 'package:omni_datetime_picker/omni_datetime_picker.dart';
 

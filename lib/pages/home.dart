@@ -1,6 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:memories/components/map_view.dart';
 import 'package:memories/components/my_user_profile.dart';
 import 'package:memories/components/overlays/menu_overlay_wrapper.dart';
 import 'package:memories/providers/map_marker.dart';
@@ -32,7 +32,21 @@ class Home extends ConsumerWidget {
           ],
         ),
         body: Stack(
-          children: [Positioned.fill(child: MapView())],
+          // children: [Positioned.fill(child: MapView())],
+          children: [
+            Positioned.fill(
+              child: GestureDetector(
+                onTap: () {
+                  ref
+                      .read(mapMarkerProvider.notifier)
+                      .setSelectedLocation(const GeoPoint(10, 10));
+                },
+                child: const ColoredBox(
+                  color: Colors.lightBlue,
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

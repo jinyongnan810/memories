@@ -27,7 +27,7 @@ class _MenuOverlay extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final animationController = useAnimationController(
       duration: const Duration(milliseconds: 200),
-      reverseDuration: const Duration(milliseconds: 100),
+      reverseDuration: const Duration(milliseconds: 200),
     );
     final selectedLocation =
         ref.watch(mapMarkerProvider.select((v) => v.selectedLocation));
