@@ -53,12 +53,16 @@ class MemoryPage extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(memory.value!.title),
+        title: Tooltip(
+          message: memory.value!.title,
+          child: Text(memory.value!.title, overflow: TextOverflow.ellipsis),
+        ),
         centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(durationString(memory.value!.startAt, memory.value!.endAt)),
             const SizedBox(height: 12),

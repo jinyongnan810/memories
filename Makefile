@@ -1,5 +1,5 @@
 publish:
-	flutter clean && flutter pub get && ./apply_env.sh && flutter build web --release && firebase deploy --only=hosting
+	rm -rf build && ./apply_env.sh && flutter build web --release && firebase deploy --only=hosting
 
 build-app: 
 	dart run build_runner build --delete-conflicting-outputs

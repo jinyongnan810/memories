@@ -21,6 +21,7 @@ mixin _$MapMarkerStatus {
   BitmapDescriptor? get markerIcon => throw _privateConstructorUsedError;
   BitmapDescriptor? get selectedMarkerIcon =>
       throw _privateConstructorUsedError;
+  BitmapDescriptor? get othersMarkerIcon => throw _privateConstructorUsedError;
   GeoPoint? get selectedLocation => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -39,6 +40,7 @@ abstract class $MapMarkerStatusCopyWith<$Res> {
       bool readyToShowMarkers,
       BitmapDescriptor? markerIcon,
       BitmapDescriptor? selectedMarkerIcon,
+      BitmapDescriptor? othersMarkerIcon,
       GeoPoint? selectedLocation});
 }
 
@@ -59,6 +61,7 @@ class _$MapMarkerStatusCopyWithImpl<$Res, $Val extends MapMarkerStatus>
     Object? readyToShowMarkers = null,
     Object? markerIcon = freezed,
     Object? selectedMarkerIcon = freezed,
+    Object? othersMarkerIcon = freezed,
     Object? selectedLocation = freezed,
   }) {
     return _then(_value.copyWith(
@@ -77,6 +80,10 @@ class _$MapMarkerStatusCopyWithImpl<$Res, $Val extends MapMarkerStatus>
       selectedMarkerIcon: freezed == selectedMarkerIcon
           ? _value.selectedMarkerIcon
           : selectedMarkerIcon // ignore: cast_nullable_to_non_nullable
+              as BitmapDescriptor?,
+      othersMarkerIcon: freezed == othersMarkerIcon
+          ? _value.othersMarkerIcon
+          : othersMarkerIcon // ignore: cast_nullable_to_non_nullable
               as BitmapDescriptor?,
       selectedLocation: freezed == selectedLocation
           ? _value.selectedLocation
@@ -99,6 +106,7 @@ abstract class _$$MarkerStatusImplCopyWith<$Res>
       bool readyToShowMarkers,
       BitmapDescriptor? markerIcon,
       BitmapDescriptor? selectedMarkerIcon,
+      BitmapDescriptor? othersMarkerIcon,
       GeoPoint? selectedLocation});
 }
 
@@ -117,6 +125,7 @@ class __$$MarkerStatusImplCopyWithImpl<$Res>
     Object? readyToShowMarkers = null,
     Object? markerIcon = freezed,
     Object? selectedMarkerIcon = freezed,
+    Object? othersMarkerIcon = freezed,
     Object? selectedLocation = freezed,
   }) {
     return _then(_$MarkerStatusImpl(
@@ -136,6 +145,10 @@ class __$$MarkerStatusImplCopyWithImpl<$Res>
           ? _value.selectedMarkerIcon
           : selectedMarkerIcon // ignore: cast_nullable_to_non_nullable
               as BitmapDescriptor?,
+      othersMarkerIcon: freezed == othersMarkerIcon
+          ? _value.othersMarkerIcon
+          : othersMarkerIcon // ignore: cast_nullable_to_non_nullable
+              as BitmapDescriptor?,
       selectedLocation: freezed == selectedLocation
           ? _value.selectedLocation
           : selectedLocation // ignore: cast_nullable_to_non_nullable
@@ -152,6 +165,7 @@ class _$MarkerStatusImpl implements _MarkerStatus {
       this.readyToShowMarkers = false,
       this.markerIcon = null,
       this.selectedMarkerIcon = null,
+      this.othersMarkerIcon = null,
       this.selectedLocation = null})
       : _markers = markers;
 
@@ -175,11 +189,14 @@ class _$MarkerStatusImpl implements _MarkerStatus {
   final BitmapDescriptor? selectedMarkerIcon;
   @override
   @JsonKey()
+  final BitmapDescriptor? othersMarkerIcon;
+  @override
+  @JsonKey()
   final GeoPoint? selectedLocation;
 
   @override
   String toString() {
-    return 'MapMarkerStatus(markers: $markers, readyToShowMarkers: $readyToShowMarkers, markerIcon: $markerIcon, selectedMarkerIcon: $selectedMarkerIcon, selectedLocation: $selectedLocation)';
+    return 'MapMarkerStatus(markers: $markers, readyToShowMarkers: $readyToShowMarkers, markerIcon: $markerIcon, selectedMarkerIcon: $selectedMarkerIcon, othersMarkerIcon: $othersMarkerIcon, selectedLocation: $selectedLocation)';
   }
 
   @override
@@ -194,6 +211,8 @@ class _$MarkerStatusImpl implements _MarkerStatus {
                 other.markerIcon == markerIcon) &&
             (identical(other.selectedMarkerIcon, selectedMarkerIcon) ||
                 other.selectedMarkerIcon == selectedMarkerIcon) &&
+            (identical(other.othersMarkerIcon, othersMarkerIcon) ||
+                other.othersMarkerIcon == othersMarkerIcon) &&
             (identical(other.selectedLocation, selectedLocation) ||
                 other.selectedLocation == selectedLocation));
   }
@@ -205,6 +224,7 @@ class _$MarkerStatusImpl implements _MarkerStatus {
       readyToShowMarkers,
       markerIcon,
       selectedMarkerIcon,
+      othersMarkerIcon,
       selectedLocation);
 
   @JsonKey(ignore: true)
@@ -220,6 +240,7 @@ abstract class _MarkerStatus implements MapMarkerStatus {
       final bool readyToShowMarkers,
       final BitmapDescriptor? markerIcon,
       final BitmapDescriptor? selectedMarkerIcon,
+      final BitmapDescriptor? othersMarkerIcon,
       final GeoPoint? selectedLocation}) = _$MarkerStatusImpl;
 
   @override
@@ -230,6 +251,8 @@ abstract class _MarkerStatus implements MapMarkerStatus {
   BitmapDescriptor? get markerIcon;
   @override
   BitmapDescriptor? get selectedMarkerIcon;
+  @override
+  BitmapDescriptor? get othersMarkerIcon;
   @override
   GeoPoint? get selectedLocation;
   @override
