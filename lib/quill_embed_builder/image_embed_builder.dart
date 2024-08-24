@@ -21,17 +21,20 @@ class ImageEmbedBuilder extends EmbedBuilder {
     if (src == null) {
       return const SizedBox();
     }
-    return ConstrainedBox(
-      constraints:
-          const BoxConstraints(maxHeight: 400, minHeight: 50, minWidth: 50),
-      child: Center(
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(12),
-          child: GestureDetector(
-            onTap: () {
-              showImageDetailDialog(context, src);
-            },
-            child: Image.network(src),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 12),
+      child: ConstrainedBox(
+        constraints:
+            const BoxConstraints(maxHeight: 400, minHeight: 50, minWidth: 50),
+        child: Center(
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: GestureDetector(
+              onTap: () {
+                showImageDetailDialog(context, src);
+              },
+              child: Image.network(src),
+            ),
           ),
         ),
       ),

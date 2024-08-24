@@ -17,7 +17,10 @@ class ImageDetailDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(12),
-      child: Center(
+      child: GestureDetector(
+        onTap: () {
+          Navigator.of(context).pop();
+        },
         child: InteractiveViewer(
           maxScale: 10,
           minScale: 0.1,
