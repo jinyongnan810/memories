@@ -9,6 +9,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:memories/firebase_options.dart';
 import 'package:memories/pages/add_memory_page.dart';
 import 'package:memories/pages/home.dart';
+import 'package:memories/pages/memory_page.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -56,6 +57,13 @@ class MyApp extends StatelessWidget {
           GoRoute(
             path: 'add',
             builder: (context, state) => const AddMemoryPage(),
+          ),
+          GoRoute(
+            path: 'memories/:id',
+            builder: (context, state) {
+              final id = state.pathParameters['id'];
+              return MemoryPage(id: id);
+            },
           ),
         ],
       ),

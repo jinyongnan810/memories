@@ -149,7 +149,11 @@ class _MarkerActionSheetState extends ConsumerState<MarkerActionSheet> {
                                 ),
                               ),
                               onTap: () {
-                                // GoRouter.of(context).go('/memories/${memory.id}');
+                                ref
+                                    .read(mapMarkerProvider.notifier)
+                                    .clearSelectedLocation();
+                                GoRouter.of(context)
+                                    .go('/memories/${entry.value.id}');
                               },
                             ),
                         ],

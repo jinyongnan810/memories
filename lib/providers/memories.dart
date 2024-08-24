@@ -15,17 +15,14 @@ class Memories extends _$Memories {
       return Future.value([]);
     }
     try {
-      final memoriesSnapshot = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(userId)
-          .collection('memories')
-          .get();
+      final memoriesSnapshot =
+          await FirebaseFirestore.instance.collection('memories').get();
       final memories = memoriesSnapshot.docs.map((e) {
         final data = e.data();
 
         final memory = Memory(
           id: e.id,
-          userId: userId,
+          userId: data['userId'] as String,
           location: data['location'] as GeoPoint,
           startAt: (data['startAt'] as Timestamp).toDate(),
           endAt: (data['endAt'] as Timestamp).toDate(),
@@ -55,11 +52,8 @@ class Memories extends _$Memories {
       return;
     }
     try {
-      final result = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(userId)
-          .collection('memories')
-          .add({
+      final result =
+          await FirebaseFirestore.instance.collection('memories').add({
         'location': location,
         'startAt': Timestamp.fromDate(startAt),
         'endAt': Timestamp.fromDate(endAt),
@@ -67,6 +61,7 @@ class Memories extends _$Memories {
         'title': title,
         'contents': contents,
         'images': [],
+        'userId': userId,
       });
 
       state = AsyncData([
@@ -87,4 +82,27 @@ class Memories extends _$Memories {
       ref.read(loggerProvider).e('⭐️ add error: $e');
     }
   }
+}
+
+@riverpod
+Future<Memory?> fetchMemory(FetchMemoryRef ref, {required String id}) async {
+  final doc =
+      await FirebaseFirestore.instance.collection('memories').doc(id).get();
+  if (!doc.exists) {
+    return null;
+  }
+  final data = doc.data();
+  if (data == null) {
+    return null;
+  }
+  return Memory(
+    id: doc.id,
+    userId: data['userId'] as String,
+    location: data['location'] as GeoPoint,
+    startAt: (data['startAt'] as Timestamp).toDate(),
+    endAt: (data['endAt'] as Timestamp).toDate(),
+    updatedAt: (data['updatedAt'] as Timestamp).toDate(),
+    title: data['title'] as String,
+    contents: data['contents'] as String,
+  );
 }
