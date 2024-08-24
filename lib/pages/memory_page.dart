@@ -56,6 +56,7 @@ class MemoryPage extends HookConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: Tooltip(
+          triggerMode: TooltipTriggerMode.tap,
           message: '($duration)${memory.value!.title}',
           child: Text(memory.value!.title, overflow: TextOverflow.ellipsis),
         ),
@@ -63,19 +64,17 @@ class MemoryPage extends HookConsumerWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        child: Expanded(
-          child: QuillEditor.basic(
-            focusNode: focusNode,
-            configurations: QuillEditorConfigurations(
-              showCursor: false,
-              controller: controller,
-              sharedConfigurations: const QuillSharedConfigurations(
-                locale: Locale('ja', 'JP'),
-              ),
-              embedBuilders: const [
-                ImageEmbedBuilder(),
-              ],
+        child: QuillEditor.basic(
+          focusNode: focusNode,
+          configurations: QuillEditorConfigurations(
+            showCursor: false,
+            controller: controller,
+            sharedConfigurations: const QuillSharedConfigurations(
+              locale: Locale('ja', 'JP'),
             ),
+            embedBuilders: const [
+              ImageEmbedBuilder(),
+            ],
           ),
         ),
       ),
