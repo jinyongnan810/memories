@@ -12,6 +12,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:memories/components/helper/duration_helper.dart';
 import 'package:memories/providers/memories.dart';
+import 'package:memories/quill_embed_builder/image_embed_builder.dart';
 import 'package:omni_datetime_picker/omni_datetime_picker.dart';
 
 import '../providers/providers.dart';
@@ -282,28 +283,5 @@ class _ContentsState extends ConsumerState<_Contents> {
         ),
       ],
     );
-  }
-}
-
-class ImageEmbedBuilder extends EmbedBuilder {
-  const ImageEmbedBuilder();
-
-  @override
-  String get key => BlockEmbed.imageType;
-
-  @override
-  Widget build(
-    BuildContext context,
-    QuillController controller,
-    Embed node,
-    bool readOnly,
-    bool inline,
-    TextStyle textStyle,
-  ) {
-    final src = node.value.data as String?;
-    if (src == null) {
-      return const SizedBox();
-    }
-    return Image.network(src);
   }
 }

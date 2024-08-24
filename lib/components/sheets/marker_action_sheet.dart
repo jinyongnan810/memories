@@ -23,7 +23,7 @@ class _MarkerActionSheetState extends ConsumerState<MarkerActionSheet> {
     super.initState();
     draggableScrollableController = DraggableScrollableController();
     draggableScrollableController.addListener(() {
-      if (draggableScrollableController.pixels <= 10) {
+      if (draggableScrollableController.pixels <= 50) {
         ref.read(mapMarkerProvider.notifier).clearSelectedLocation();
       }
     });
@@ -49,8 +49,8 @@ class _MarkerActionSheetState extends ConsumerState<MarkerActionSheet> {
     final sheet = DraggableScrollableSheet(
       controller: draggableScrollableController,
       minChildSize: 0,
-      initialChildSize: 0.2,
-      snapSizes: const [0, 0.2, 1],
+      initialChildSize: 0.3,
+      snapSizes: const [0, 0.3, 1],
       snap: true,
       expand: false,
       builder: (context, scrollController) {
@@ -116,10 +116,7 @@ class _MarkerActionSheetState extends ConsumerState<MarkerActionSheet> {
                           subtitle: isSignedIn ? null : const Text('ログインが必要です'),
                           onTap: () {
                             if (ref.read(loginStatusProvider).userId == null) {
-                              final loginNotifier =
-                                  ref.read(loginStatusProvider.notifier);
-                              Navigator.of(context).pop();
-                              loginNotifier.login();
+                              ref.read(loginStatusProvider.notifier).login();
                               return;
                             }
                             final goRouter = GoRouter.of(context);

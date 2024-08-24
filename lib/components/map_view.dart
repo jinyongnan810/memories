@@ -20,6 +20,7 @@ class MapView extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final mapMarkerStatus = ref.watch(mapMarkerProvider);
     final selectedLocation = mapMarkerStatus.selectedLocation;
+    // TODO(kin): このwidgetを完全にタップできないようにしたい
     return GoogleMap(
       mapType: MapType.hybrid,
       initialCameraPosition: _initialPosition,
@@ -29,6 +30,10 @@ class MapView extends ConsumerWidget {
           : WebGestureHandling.auto,
 
       onTap: (latLng) {
+        if (mapMarkerStatus.selectedLocation != null) {
+          ref.read(mapMarkerProvider.notifier).clearSelectedLocation();
+          return;
+        }
         ref.read(mapMarkerProvider.notifier).setSelectedLocation(
               GeoPoint(latLng.latitude, latLng.longitude),
             );

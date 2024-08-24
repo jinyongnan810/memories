@@ -10,10 +10,6 @@ part 'memories.g.dart';
 class Memories extends _$Memories {
   @override
   Future<List<Memory>> build() async {
-    final userId = ref.watch(loginStatusProvider.select((v) => v.userId));
-    if (userId == null) {
-      return Future.value([]);
-    }
     try {
       final memoriesSnapshot =
           await FirebaseFirestore.instance.collection('memories').get();

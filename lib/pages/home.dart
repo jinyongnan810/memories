@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_portal/flutter_portal.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:memories/components/overlays/menu_overlay_wrapper.dart';
-import 'package:memories/providers/map_marker.dart';
 
 import '../components/components.dart';
 
@@ -10,29 +10,24 @@ class Home extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.listen(mapMarkerProvider.select((e) => e.selectedLocation),
-        (prev, next) async {
-      if (prev != next && next != null) {
-        // await showMarkerActionSheet(context, location: next);
-        // ref.read(mapMarkerProvider.notifier).clearSelectedLocation();
-      }
-    });
-    return MenuOverlayWrapper(
-      child: Scaffold(
-        // extendBodyBehindAppBar: true,
-        appBar: AppBar(
-          title: const Text('思い出の星空'),
-          // backgroundColor: Colors.transparent,
-          // elevation: 0,
-          actions: const [
-            MyUserProfile(),
-            SizedBox(
-              width: 12,
-            ),
-          ],
-        ),
-        body: Stack(
-          children: [Positioned.fill(child: MapView())],
+    return Portal(
+      child: MenuOverlayWrapper(
+        child: Scaffold(
+          // extendBodyBehindAppBar: true,
+          appBar: AppBar(
+            title: const Text('思い出の星空'),
+            // backgroundColor: Colors.transparent,
+            // elevation: 0,
+            actions: const [
+              MyUserProfile(),
+              SizedBox(
+                width: 12,
+              ),
+            ],
+          ),
+          body: Stack(
+            children: [Positioned.fill(child: MapView())],
+          ),
         ),
       ),
     );
