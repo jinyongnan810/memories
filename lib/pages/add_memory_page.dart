@@ -10,8 +10,10 @@ import 'package:flutter_quill/flutter_quill.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:memories/components/dialogs/image_title_input_dialog.dart';
 import 'package:memories/components/helper/duration_helper.dart';
 import 'package:memories/providers/memories.dart';
+import 'package:memories/quill_embed_builder/image_caption_embed_builder.dart';
 import 'package:memories/quill_embed_builder/image_embed_builder.dart';
 import 'package:omni_datetime_picker/omni_datetime_picker.dart';
 
@@ -213,6 +215,21 @@ class _ContentsState extends ConsumerState<_Contents> {
     }
   }
 
+  Future<void> _setImageTitle() async {
+    final result = await showImageTitleInputDialog(context);
+    if (result == null || result.isEmpty) {
+      return;
+    }
+    final index = widget.controller.selection.baseOffset;
+    final length = widget.controller.selection.extentOffset - index;
+    widget.controller.replaceText(
+      index,
+      length,
+      BlockEmbed.formula(result),
+      TextSelection.collapsed(offset: index + 1),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -228,6 +245,11 @@ class _ContentsState extends ConsumerState<_Contents> {
                 icon: const Icon(Icons.photo),
                 tooltip: '画像を添付する',
                 onPressed: _pickImageAndUpload,
+              ),
+              QuillToolbarCustomButtonOptions(
+                icon: const Icon(Icons.closed_caption),
+                tooltip: '画像の説明を追加する',
+                onPressed: _setImageTitle,
               ),
             ],
             showFontFamily: false,
@@ -247,8 +269,9 @@ class _ContentsState extends ConsumerState<_Contents> {
             showClipboardCut: false,
             showClipboardPaste: false,
             showSearchButton: false,
+            showStrikeThrough: false,
             showFontSize: false,
-            multiRowsDisplay: false,
+            // multiRowsDisplay: false,
             buttonOptions: QuillSimpleToolbarButtonOptions(
               base: QuillToolbarBaseButtonOptions(
                 afterButtonPressed:
@@ -276,6 +299,7 @@ class _ContentsState extends ConsumerState<_Contents> {
               ),
               embedBuilders: const [
                 ImageEmbedBuilder(),
+                ImageCaptionEmbedBuilder(),
               ],
             ),
             focusNode: widget.controller.editorFocusNode,

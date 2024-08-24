@@ -7,6 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:memories/components/helper/duration_helper.dart';
 import 'package:memories/models/memory.dart';
 import 'package:memories/providers/memories.dart';
+import 'package:memories/quill_embed_builder/image_caption_embed_builder.dart';
 import 'package:memories/quill_embed_builder/image_embed_builder.dart';
 
 class MemoryPage extends HookConsumerWidget {
@@ -74,6 +75,7 @@ class MemoryPage extends HookConsumerWidget {
             ),
             embedBuilders: const [
               ImageEmbedBuilder(),
+              ImageCaptionEmbedBuilder(),
             ],
           ),
         ),

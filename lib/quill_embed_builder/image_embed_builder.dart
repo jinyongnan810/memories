@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
-import 'package:memories/components/image_detail_dialog.dart';
+import 'package:memories/components/dialogs/image_detail_dialog.dart';
 
 class ImageEmbedBuilder extends EmbedBuilder {
   const ImageEmbedBuilder();
