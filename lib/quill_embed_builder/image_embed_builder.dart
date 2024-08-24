@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
+import 'package:memories/components/image_detail_dialog.dart';
 
 class ImageEmbedBuilder extends EmbedBuilder {
   const ImageEmbedBuilder();
@@ -26,7 +27,12 @@ class ImageEmbedBuilder extends EmbedBuilder {
       child: Center(
         child: ClipRRect(
           borderRadius: BorderRadius.circular(12),
-          child: Image.network(src),
+          child: GestureDetector(
+            onTap: () {
+              showImageDetailDialog(context, src);
+            },
+            child: Image.network(src),
+          ),
         ),
       ),
     );
