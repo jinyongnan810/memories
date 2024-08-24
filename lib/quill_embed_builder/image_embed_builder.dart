@@ -21,8 +21,14 @@ class ImageEmbedBuilder extends EmbedBuilder {
       return const SizedBox();
     }
     return ConstrainedBox(
-      constraints: const BoxConstraints(maxHeight: 400),
-      child: Image.network(src),
+      constraints:
+          const BoxConstraints(maxHeight: 400, minHeight: 50, minWidth: 50),
+      child: Center(
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(12),
+          child: Image.network(src),
+        ),
+      ),
     );
   }
 }

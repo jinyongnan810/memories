@@ -51,37 +51,32 @@ class MemoryPage extends HookConsumerWidget {
       );
     }
 
+    final duration = durationString(memory.value!.startAt, memory.value!.endAt);
+
     return Scaffold(
       appBar: AppBar(
         title: Tooltip(
-          message: memory.value!.title,
+          message: '($duration)${memory.value!.title}',
           child: Text(memory.value!.title, overflow: TextOverflow.ellipsis),
         ),
         centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(durationString(memory.value!.startAt, memory.value!.endAt)),
-            const SizedBox(height: 12),
-            Expanded(
-              child: QuillEditor.basic(
-                focusNode: focusNode,
-                configurations: QuillEditorConfigurations(
-                  showCursor: false,
-                  controller: controller,
-                  sharedConfigurations: const QuillSharedConfigurations(
-                    locale: Locale('ja', 'JP'),
-                  ),
-                  embedBuilders: const [
-                    ImageEmbedBuilder(),
-                  ],
-                ),
+        child: Expanded(
+          child: QuillEditor.basic(
+            focusNode: focusNode,
+            configurations: QuillEditorConfigurations(
+              showCursor: false,
+              controller: controller,
+              sharedConfigurations: const QuillSharedConfigurations(
+                locale: Locale('ja', 'JP'),
               ),
+              embedBuilders: const [
+                ImageEmbedBuilder(),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

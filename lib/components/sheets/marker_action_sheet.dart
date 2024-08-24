@@ -36,6 +36,12 @@ class _MarkerActionSheetState extends ConsumerState<MarkerActionSheet> {
   }
 
   @override
+  void didUpdateWidget(covariant MarkerActionSheet oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    draggableScrollableController.reset();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final isSignedIn = ref.watch(loginStatusProvider).userId != null;
     final memories = ref.watch(memoriesProvider);
@@ -44,7 +50,7 @@ class _MarkerActionSheetState extends ConsumerState<MarkerActionSheet> {
             .toList() ??
         [];
     final sortedSameLocationMemories = sameLocationMemories
-      ..sort((a, b) => a.startAt.compareTo(b.startAt));
+      ..sort((a, b) => b.startAt.compareTo(a.startAt));
 
     final sheet = DraggableScrollableSheet(
       controller: draggableScrollableController,
@@ -113,7 +119,8 @@ class _MarkerActionSheetState extends ConsumerState<MarkerActionSheet> {
                           ),
                           leading: const Icon(Icons.edit),
                           title: const Text('思い出を追加する'),
-                          subtitle: isSignedIn ? null : const Text('ログインが必要です'),
+                          subtitle:
+                              isSignedIn ? null : const Text('(ログインが必要です)'),
                           onTap: () {
                             if (ref.read(loginStatusProvider).userId == null) {
                               ref.read(loginStatusProvider.notifier).login();
@@ -136,7 +143,7 @@ class _MarkerActionSheetState extends ConsumerState<MarkerActionSheet> {
                             ListTile(
                               leading: Text(
                                 textAlign: TextAlign.center,
-                                '${entry.key}',
+                                '${entry.key + 1}',
                               ), //const Icon(Icons.star),
                               title: Text(entry.value.title),
                               subtitle: Text(
