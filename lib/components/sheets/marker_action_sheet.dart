@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:memories/components/helper/duration_helper.dart';
 import 'package:memories/providers/memories.dart';
 
 import '../../providers/providers.dart';
@@ -46,59 +49,116 @@ class _MarkerActionSheetState extends ConsumerState<MarkerActionSheet> {
     final sheet = DraggableScrollableSheet(
       controller: draggableScrollableController,
       minChildSize: 0,
-      initialChildSize: 0.3,
-      snapSizes: const [0, 0.3, 1],
+      initialChildSize: 0.2,
+      snapSizes: const [0, 0.2, 1],
       snap: true,
       expand: false,
       builder: (context, scrollController) {
-        return Container(
-          decoration: const BoxDecoration(
-            borderRadius: BorderRadius.vertical(
+        return ScrollConfiguration(
+          // https://github.com/flutter/flutter/issues/101903#issuecomment-1771507814
+          behavior: ScrollConfiguration.of(context).copyWith(
+            dragDevices: {
+              PointerDeviceKind.touch,
+              PointerDeviceKind.mouse,
+              PointerDeviceKind.trackpad,
+            },
+          ),
+          child: Material(
+            borderRadius: const BorderRadius.vertical(
               top: Radius.circular(12),
             ),
-            color: Colors.black,
-            border: Border(
-              top: BorderSide(
-                color: Colors.white,
-              ),
-              left: BorderSide(
-                color: Colors.white,
-              ),
-              right: BorderSide(
-                color: Colors.white,
-              ),
-            ),
-            boxShadow: [
-              BoxShadow(
-                blurRadius: 3,
-                color: Colors.white,
-              ),
-            ],
-          ),
-          child: Stack(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 28),
-                child: SingleChildScrollView(
-                  controller: scrollController,
-                  physics: const BouncingScrollPhysics(),
-                  child: Column(
-                    children: [
-                      Container(
-                        height: 50,
-                        color: Colors.white,
-                      ),
-                    ],
+            child: Container(
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.vertical(
+                  top: Radius.circular(12),
+                ),
+                color: Colors.black,
+                border: Border(
+                  top: BorderSide(
+                    color: Colors.white,
+                  ),
+                  left: BorderSide(
+                    color: Colors.white,
+                  ),
+                  right: BorderSide(
+                    color: Colors.white,
                   ),
                 ),
+                boxShadow: [
+                  BoxShadow(
+                    blurRadius: 3,
+                    color: Colors.white,
+                  ),
+                ],
               ),
-              const Positioned(
-                top: 12,
-                left: 0,
-                right: 0,
-                child: Center(child: _Handle()),
+              child: Stack(
+                children: [
+                  const Positioned(
+                    top: 12,
+                    left: 0,
+                    right: 0,
+                    child: Center(child: _Handle()),
+                  ),
+                  SingleChildScrollView(
+                    padding: const EdgeInsets.only(top: 28),
+                    controller: scrollController,
+                    physics: const BouncingScrollPhysics(),
+                    child: Column(
+                      children: [
+                        ListTile(
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.vertical(
+                              top: Radius.circular(12),
+                            ),
+                          ),
+                          leading: const Icon(Icons.edit),
+                          title: const Text('思い出を追加する'),
+                          subtitle: isSignedIn ? null : const Text('ログインが必要です'),
+                          onTap: () {
+                            if (ref.read(loginStatusProvider).userId == null) {
+                              final loginNotifier =
+                                  ref.read(loginStatusProvider.notifier);
+                              Navigator.of(context).pop();
+                              loginNotifier.login();
+                              return;
+                            }
+                            final goRouter = GoRouter.of(context);
+                            ref
+                                .read(mapMarkerProvider.notifier)
+                                .clearSelectedLocation();
+
+                            goRouter.go(
+                              '/add',
+                              extra: widget.location,
+                            );
+                          },
+                        ),
+                        ...[
+                          for (final entry
+                              in sortedSameLocationMemories.asMap().entries)
+                            ListTile(
+                              leading: Text(
+                                textAlign: TextAlign.center,
+                                '${entry.key}',
+                              ), //const Icon(Icons.star),
+                              title: Text(entry.value.title),
+                              subtitle: Text(
+                                durationStringForSheet(
+                                  entry.value.startAt,
+                                  entry.value.endAt,
+                                ),
+                              ),
+                              onTap: () {
+                                // GoRouter.of(context).go('/memories/${memory.id}');
+                              },
+                            ),
+                        ],
+                      ],
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         );
       },
@@ -108,54 +168,6 @@ class _MarkerActionSheetState extends ConsumerState<MarkerActionSheet> {
     );
   }
 }
-
-// Column(
-//                     children: [
-//                       ListTile(
-//                         shape: const RoundedRectangleBorder(
-//                           borderRadius: BorderRadius.vertical(
-//                             top: Radius.circular(12),
-//                           ),
-//                         ),
-//                         leading: const Icon(Icons.edit),
-//                         title: const Text('思い出を追加する'),
-//                         subtitle: isSignedIn ? null : const Text('ログインが必要です'),
-//                         onTap: () {
-//                           if (ref.read(loginStatusProvider).userId == null) {
-//                             final loginNotifier =
-//                                 ref.read(loginStatusProvider.notifier);
-//                             Navigator.of(context).pop();
-//                             loginNotifier.login();
-//                             return;
-//                           }
-//                           final goRouter = GoRouter.of(context);
-//                           ref
-//                               .read(mapMarkerProvider.notifier)
-//                               .clearSelectedLocation();
-
-//                           goRouter.go(
-//                             '/add',
-//                             extra: location,
-//                           );
-//                         },
-//                       ),
-//                       ...sortedSameLocationMemories.map(
-//                         (memory) => ListTile(
-//                           leading: const Icon(Icons.star),
-//                           title: Text(memory.title),
-//                           subtitle: Text(
-//                             durationStringForSheet(
-//                               memory.startAt,
-//                               memory.endAt,
-//                             ),
-//                           ),
-//                           onTap: () {
-//                             // GoRouter.of(context).go('/memories/${memory.id}');
-//                           },
-//                         ),
-//                       ),
-//                     ],
-//                   ),
 
 class _Handle extends StatelessWidget {
   const _Handle();
