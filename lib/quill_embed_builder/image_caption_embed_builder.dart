@@ -20,7 +20,7 @@ class ImageCaptionEmbedBuilder extends EmbedBuilder {
       return const SizedBox();
     }
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
+      padding: const EdgeInsets.only(bottom: 12),
       child: Center(
         child: Text(
           text,

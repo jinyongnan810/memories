@@ -208,6 +208,7 @@ class _ContentsState extends ConsumerState<_Contents> {
           BlockEmbed.image(downloadUrl),
           TextSelection.collapsed(offset: index + 1),
         );
+        await _setImageTitle();
         // ignore: avoid_catches_without_on_clauses
       } catch (e) {
         ref.read(loggerProvider).e('Error uploading image: $e');
