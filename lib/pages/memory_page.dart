@@ -5,6 +5,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:memories/components/helper/duration_helper.dart';
+import 'package:memories/components/user_icon.dart';
 import 'package:memories/models/memory.dart';
 import 'package:memories/providers/memories.dart';
 import 'package:memories/quill_embed_builder/image_caption_embed_builder.dart';
@@ -62,6 +63,16 @@ class MemoryPage extends HookConsumerWidget {
           child: Text(memory.value!.title, overflow: TextOverflow.ellipsis),
         ),
         centerTitle: true,
+        actions: [
+          Row(
+            children: [
+              const Text('By:'),
+              const SizedBox(width: 4),
+              UserIcon(memory.value!.userId),
+              const SizedBox(width: 12),
+            ],
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),

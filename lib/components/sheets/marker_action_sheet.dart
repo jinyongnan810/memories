@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:memories/components/helper/duration_helper.dart';
+import 'package:memories/components/user_icon.dart';
 import 'package:memories/providers/memories.dart';
 
 import '../../providers/providers.dart';
@@ -141,10 +142,7 @@ class _MarkerActionSheetState extends ConsumerState<MarkerActionSheet> {
                           for (final entry
                               in sortedSameLocationMemories.asMap().entries)
                             ListTile(
-                              leading: Text(
-                                textAlign: TextAlign.center,
-                                '${entry.key + 1}',
-                              ), //const Icon(Icons.star),
+                              leading: UserIcon(entry.value.userId),
                               title: Text(entry.value.title),
                               subtitle: Text(
                                 durationStringForSheet(

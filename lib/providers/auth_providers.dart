@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,6 +18,12 @@ class LoginStatusProvider extends Notifier<LoginStatus> {
           displayName: user.displayName,
           photoUrl: user.photoURL,
         );
+        // TODO(kin): set proper access rules
+        FirebaseFirestore.instance.collection('users').doc(user.uid).set({
+          'email': user.email,
+          'displayName': user.displayName,
+          'photoUrl': user.photoURL,
+        });
         return;
       }
       state = LoginStatus.empty();
