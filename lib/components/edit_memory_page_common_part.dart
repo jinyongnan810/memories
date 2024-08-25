@@ -11,6 +11,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:memories/components/dialogs/image_title_input_dialog.dart';
+import 'package:memories/components/helper/duration_helper.dart';
 import 'package:memories/providers/auth_providers.dart';
 import 'package:memories/providers/logger_providers.dart';
 import 'package:memories/providers/memories.dart';
@@ -81,6 +82,9 @@ class EditMemoryPageCommonPart extends HookConsumerWidget {
         startWidget: const Text('開始日時'),
         endWidget: const Text('終了日時'),
         isForceEndDateAfterStartDate: true,
+        is24HourMode: true,
+        minutesInterval: 15,
+        type: OmniDateTimePickerType.date,
         onStartDateAfterEndDateError: () {
           Navigator.of(context).pop();
           ScaffoldMessenger.of(context).showSnackBar(
@@ -119,7 +123,9 @@ class EditMemoryPageCommonPart extends HookConsumerWidget {
               ),
               actions: [
                 Tooltip(
-                  message: '思い出の期間を選択',
+                  message: startDateTime.value != null
+                      ? durationString(startDateTime.value!, endDateTime.value!)
+                      : '思い出の期間を選択',
                   child: IconButton(
                     onPressed: pickDuration,
                     icon: startDateTime.value != null

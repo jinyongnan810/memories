@@ -28,6 +28,8 @@ class MapView extends ConsumerWidget {
       webGestureHandling: mapMarkerStatus.selectedLocation != null
           ? WebGestureHandling.none
           : WebGestureHandling.auto,
+      mapToolbarEnabled: false,
+      zoomControlsEnabled: false,
 
       onTap: (latLng) {
         if (mapMarkerStatus.selectedLocation != null) {
