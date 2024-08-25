@@ -220,6 +220,16 @@ class _ContentsEditor extends StatefulHookConsumerWidget {
 }
 
 class _ContentsEditorState extends ConsumerState<_ContentsEditor> {
+  void _showSnackbar(BuildContext context, String text, [bool short = false]) {
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        duration: Duration(seconds: short ? 2 : 4),
+        content: Text(text),
+      ),
+    );
+  }
+
   Future<void> _pickImageAndUpload() async {
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
@@ -227,6 +237,9 @@ class _ContentsEditorState extends ConsumerState<_ContentsEditor> {
 
     if (pickedFile != null && userId != null) {
       try {
+        if (mounted) {
+          _showSnackbar(context, '画像をアップロード中...');
+        }
         final fileName =
             'images/$userId/${DateTime.now().millisecondsSinceEpoch}.png';
         final ref = FirebaseStorage.instance.ref().child(fileName);
@@ -248,6 +261,9 @@ class _ContentsEditorState extends ConsumerState<_ContentsEditor> {
           BlockEmbed.image(downloadUrl),
           TextSelection.collapsed(offset: index + 1),
         );
+        if (mounted) {
+          _showSnackbar(context, 'アップロード完了！', true);
+        }
         await _setImageTitle();
         // ignore: avoid_catches_without_on_clauses
       } catch (e) {
