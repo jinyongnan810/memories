@@ -142,7 +142,7 @@ class _MarkerActionSheetState extends ConsumerState<MarkerActionSheet> {
                           for (final entry
                               in sortedSameLocationMemories.asMap().entries)
                             ListTile(
-                              leading: UserIcon(entry.value.userId),
+                              leading: UserIcon(userId: entry.value.userId),
                               title: Text(entry.value.title),
                               subtitle: Text(
                                 durationStringForSheet(

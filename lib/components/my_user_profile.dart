@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:memories/components/user_icon.dart';
 
 import '../providers/providers.dart';
 import 'components.dart';
@@ -16,14 +17,7 @@ class MyUserProfile extends ConsumerWidget {
         onTap: () {
           showAccountSheet(context);
         },
-        child: CircleAvatar(
-          radius: 20,
-          child: ClipOval(
-            child: Image.network(
-              loginStatus.photoUrl ?? '',
-            ),
-          ),
-        ),
+        child: UserIcon(userId: loginStatus.userId!),
       );
     }
     return TextButton(

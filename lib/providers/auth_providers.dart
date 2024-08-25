@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:memories/models/login_status.dart';
+import 'package:memories/providers/user_providers.dart';
 
 class LoginStatusProvider extends Notifier<LoginStatus> {
   @override
@@ -24,6 +25,7 @@ class LoginStatusProvider extends Notifier<LoginStatus> {
           'displayName': user.displayName,
           'photoUrl': user.photoURL,
         });
+        ref.invalidate(fetchUserProvider(id: user.uid));
         return;
       }
       state = LoginStatus.empty();

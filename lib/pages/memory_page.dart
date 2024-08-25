@@ -68,7 +68,7 @@ class MemoryPage extends HookConsumerWidget {
             children: [
               const Text('By:'),
               const SizedBox(width: 4),
-              UserIcon(memory.value!.userId),
+              UserIcon(userId: memory.value!.userId),
               const SizedBox(width: 12),
             ],
           ),

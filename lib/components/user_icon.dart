@@ -4,8 +4,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:memories/providers/user_providers.dart';
 
 class UserIcon extends ConsumerWidget {
-  const UserIcon(this.userId, {super.key});
+  const UserIcon({super.key, required this.userId, this.size = 32});
   final String userId;
+  final double size;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -16,7 +17,7 @@ class UserIcon extends ConsumerWidget {
         message: data.email,
         child: ClipOval(
           child: CachedNetworkImage(
-            width: 32,
+            width: size,
             imageUrl: data.photoUrl!,
             progressIndicatorBuilder: (context, url, downloadProgress) =>
                 CircularProgressIndicator(value: downloadProgress.progress),
