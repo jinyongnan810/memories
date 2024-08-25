@@ -1,18 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:memories/components/edit_memory_page_common_part.dart';
+import 'package:memories/providers/memories.dart';
 
 import '../providers/providers.dart';
 
-class AddMemoryPage extends HookConsumerWidget {
-  const AddMemoryPage({super.key});
+class EditMemoryPage extends HookConsumerWidget {
+  const EditMemoryPage({super.key, required this.id});
+  final String? id;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final location = useState<GeoPoint?>(null);
     useEffect(
       () {
         Future(() {
@@ -20,27 +20,31 @@ class AddMemoryPage extends HookConsumerWidget {
             Navigator.of(context).pop();
             return;
           }
-          if ((GoRouterState.of(context).extra as GeoPoint?) == null) {
+          if (id == null || id!.isEmpty) {
             Navigator.of(context).pop();
             return;
           }
-          location.value = GoRouterState.of(context).extra! as GeoPoint;
         });
 
         return null;
       },
       [],
     );
-    if (location.value == null) {
-      return const Scaffold(
-        body: Center(
-          child: CircularProgressIndicator(),
-        ),
-      );
+    if (id != null) {
+      ref.listen(fetchMemoryProvider(id: id!), (prev, next) {
+        if (next is AsyncData) {
+          final data = next.value;
+          if (data == null) {
+            Navigator.of(context).pop();
+            return;
+          }
+        }
+      });
     }
 
     return EditMemoryPageCommonPart(
-      geoPoint: location.value!,
+      id: id,
+      geoPoint: const GeoPoint(0, 0),
     );
   }
 }

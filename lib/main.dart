@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:memories/firebase_options.dart';
 import 'package:memories/pages/add_memory_page.dart';
+import 'package:memories/pages/edit_memory_page.dart';
 import 'package:memories/pages/home.dart';
 import 'package:memories/pages/memory_page.dart';
 
@@ -60,6 +61,13 @@ class MyApp extends StatelessWidget {
             builder: (context, state) {
               final id = state.pathParameters['id'];
               return MemoryPage(id: id);
+            },
+          ),
+          GoRoute(
+            path: 'memories/:id/edit',
+            builder: (context, state) {
+              final id = state.pathParameters['id'];
+              return EditMemoryPage(id: id);
             },
           ),
         ],

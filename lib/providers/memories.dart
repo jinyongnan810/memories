@@ -36,7 +36,7 @@ class Memories extends _$Memories {
     }
   }
 
-  Future<void> add({
+  Future<String?> addMemory({
     required String title,
     required String contents,
     required GeoPoint location,
@@ -45,7 +45,7 @@ class Memories extends _$Memories {
   }) async {
     final userId = ref.watch(loginStatusProvider.select((v) => v.userId));
     if (userId == null) {
-      return;
+      return null;
     }
     try {
       final result =
@@ -56,7 +56,6 @@ class Memories extends _$Memories {
         'updatedAt': Timestamp.now(),
         'title': title,
         'contents': contents,
-        'images': [],
         'userId': userId,
       });
 
@@ -73,9 +72,74 @@ class Memories extends _$Memories {
           contents: contents,
         ),
       ]);
+      return result.id;
       // ignore: avoid_catches_without_on_clauses
     } catch (e) {
       ref.read(loggerProvider).e('⭐️ add error: $e');
+    }
+    return null;
+  }
+
+  Future<void> updateMemory({
+    required String id,
+    required String title,
+    required String contents,
+    required GeoPoint location,
+    required DateTime startAt,
+    required DateTime endAt,
+  }) async {
+    final userId = ref.watch(loginStatusProvider.select((v) => v.userId));
+    if (userId == null) {
+      return;
+    }
+    try {
+      await FirebaseFirestore.instance.collection('memories').doc(id).update({
+        'location': location,
+        'startAt': Timestamp.fromDate(startAt),
+        'endAt': Timestamp.fromDate(endAt),
+        'updatedAt': Timestamp.now(),
+        'title': title,
+        'contents': contents,
+      });
+      final updatedMemory = Memory(
+        id: id,
+        userId: userId,
+        location: location,
+        startAt: startAt,
+        endAt: endAt,
+        updatedAt: DateTime.now(),
+        title: title,
+        contents: contents,
+      );
+
+      state = AsyncData([
+        ...state.valueOrNull?.map((e) {
+              if (e.id == id) {
+                return updatedMemory;
+              }
+              return e;
+            }).toList() ??
+            [],
+      ]);
+      // ignore: avoid_catches_without_on_clauses
+    } catch (e) {
+      ref.read(loggerProvider).e('⭐️ update error: $e');
+    }
+  }
+
+  Future<void> deleteMemory(String id) async {
+    final userId = ref.watch(loginStatusProvider.select((v) => v.userId));
+    if (userId == null) {
+      return;
+    }
+    try {
+      await FirebaseFirestore.instance.collection('memories').doc(id).delete();
+      state = AsyncData([
+        ...state.valueOrNull?.where((e) => e.id != id).toList() ?? [],
+      ]);
+      // ignore: avoid_catches_without_on_clauses
+    } catch (e) {
+      ref.read(loggerProvider).e('⭐️ delete error: $e');
     }
   }
 }

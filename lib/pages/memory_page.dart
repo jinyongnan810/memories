@@ -3,13 +3,17 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_quill/flutter_quill.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:memories/components/dialogs/delete_memory_dialog.dart';
 import 'package:memories/components/helper/duration_helper.dart';
 import 'package:memories/components/user_icon.dart';
 import 'package:memories/models/memory.dart';
 import 'package:memories/providers/memories.dart';
 import 'package:memories/quill_embed_builder/image_caption_embed_builder.dart';
 import 'package:memories/quill_embed_builder/image_embed_builder.dart';
+
+import '../providers/providers.dart';
 
 class MemoryPage extends HookConsumerWidget {
   const MemoryPage({super.key, this.id});
@@ -54,6 +58,7 @@ class MemoryPage extends HookConsumerWidget {
     }
 
     final duration = durationString(memory.value!.startAt, memory.value!.endAt);
+    final isMe = ref.watch(loginStatusProvider).userId == memory.value!.userId;
 
     return Scaffold(
       appBar: AppBar(
@@ -65,12 +70,36 @@ class MemoryPage extends HookConsumerWidget {
         centerTitle: true,
         actions: [
           Row(
-            children: [
-              const Text('By:'),
-              const SizedBox(width: 4),
-              UserIcon(userId: memory.value!.userId),
-              const SizedBox(width: 12),
-            ],
+            children: (isMe
+                ? ([
+                    IconButton(
+                      icon: const Icon(Icons.edit),
+                      onPressed: () {
+                        ref.invalidate(fetchMemoryProvider(id: id!));
+                        GoRouter.of(context)
+                            .go('/memories/${memory.value!.id}/edit');
+                      },
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.delete),
+                      onPressed: () async {
+                        final confirm = await showDeleteMemoryDialog(context);
+                        if (confirm == true) {}
+                        await ref
+                            .read(memoriesProvider.notifier)
+                            .deleteMemory(memory.value!.id);
+                        if (context.mounted) {
+                          Navigator.of(context).pop();
+                        }
+                      },
+                    ),
+                  ])
+                : [
+                    const Text('By:'),
+                    const SizedBox(width: 4),
+                    UserIcon(userId: memory.value!.userId),
+                    const SizedBox(width: 12),
+                  ]),
           ),
         ],
       ),
