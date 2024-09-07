@@ -2,7 +2,7 @@ import express, { Application, Request, Response, NextFunction } from "express";
 import * as admin from "firebase-admin";
 import cors from "cors";
 import { errorHandler } from "./middlewares/error_handler";
-import { body, validationResult } from "express-validator";
+import { body, param, validationResult } from "express-validator";
 import { checkIfAuthenticated } from "./middlewares/auth";
 
 admin.initializeApp({
@@ -38,7 +38,7 @@ app.post(
     const userId = req.app.locals.auth.user_id;
     const targetUserEmail = req.body.email;
     console.log(
-      `request add friends start. userId: ${userId}, targetUserId: ${targetUserEmail}`
+      `request add friend start. userId: ${userId}, targetUserEmail: ${targetUserEmail}`
     );
 
     try {
@@ -66,7 +66,131 @@ app.post(
           console.error(err);
           throw new ApiError("update requests failed", 500);
         });
-      console.log(`request add friends end`);
+      console.log(`request add friend end`);
+      res.status(200).send(`ok`);
+    } catch (err) {
+      next(err);
+    }
+  }
+);
+
+app.delete(
+  "/friends/request/:userId",
+  param("userId")
+    .matches(/^\w{28}$/)
+    .withMessage("Invalid userId"),
+  async (req: Request, res: Response, next: NextFunction) => {
+    if (checkHasValidationError(req, res)) {
+      return;
+    }
+    const userId = req.app.locals.auth.user_id;
+    const targetUserId = req.params.userId;
+    console.log(
+      `request delete friend start. userId: ${userId}, targetUserId: ${targetUserId}`
+    );
+
+    try {
+      await admin
+        .firestore()
+        .collection("users")
+        .doc(userId)
+        .collection("requests")
+        .doc(targetUserId)
+        .delete()
+        .catch((err) => {
+          console.error(err);
+          throw new ApiError("delete request failed", 500);
+        });
+      console.log(`request delete friend end`);
+      res.status(200).send(`ok`);
+    } catch (err) {
+      next(err);
+    }
+  }
+);
+
+app.post(
+  "/friends",
+  body("userId")
+    .matches(/^\w{28}$/)
+    .withMessage("Invalid userId"),
+  async (req: Request, res: Response, next: NextFunction) => {
+    if (checkHasValidationError(req, res)) {
+      return;
+    }
+    const userId = req.app.locals.auth.user_id;
+    const targetUserId = req.body.userId;
+    console.log(
+      `accept friend request start. userId: ${userId}, targetUserId: ${targetUserId}`
+    );
+
+    try {
+      const targetRequestData = await admin
+        .firestore()
+        .collection("users")
+        .doc(userId)
+        .collection("requests")
+        .doc(targetUserId)
+        .get()
+        .catch((err) => {
+          console.error(err);
+          throw new ApiError("get user request failed", 500);
+        });
+      const targetRequest = targetRequestData.data();
+      if (!targetRequest || !targetRequest.exists) {
+        throw new ApiError("target user request not found", 404);
+      }
+      await targetRequestData.ref.delete().catch((err) => {
+        console.error(err);
+        throw new ApiError("delete user request failed", 500);
+      });
+      await admin
+        .firestore()
+        .collection("users")
+        .doc(userId)
+        .collection("friends")
+        .doc(targetUserId)
+        .set({ acceptTime: admin.firestore.FieldValue.serverTimestamp() })
+        .catch((err) => {
+          console.error(err);
+          throw new ApiError("update friends failed", 500);
+        });
+      console.log(`accept friend request end`);
+      res.status(200).send(`ok`);
+    } catch (err) {
+      next(err);
+    }
+  }
+);
+
+app.delete(
+  "/friends",
+  body("userId")
+    .matches(/^\w{28}$/)
+    .withMessage("Invalid userId"),
+  async (req: Request, res: Response, next: NextFunction) => {
+    if (checkHasValidationError(req, res)) {
+      return;
+    }
+    const userId = req.app.locals.auth.user_id;
+    const targetUserId = req.body.userId;
+    console.log(
+      `delete friend start. userId: ${userId}, targetUserId: ${targetUserId}`
+    );
+
+    try {
+      await admin
+        .firestore()
+        .collection("users")
+        .doc(userId)
+        .collection("friends")
+        .doc(targetUserId)
+        .delete()
+        .catch((err) => {
+          console.error(err);
+          throw new ApiError("delete friend failed", 500);
+        });
+      console.log(`delete friend request end`);
       res.status(200).send(`ok`);
     } catch (err) {
       next(err);
