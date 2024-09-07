@@ -3,6 +3,7 @@
   "dart.flutterSdkPath": "~/.asdf/installs/flutter/3.22.1-stable",
   "cSpell.words": [
     "datetime",
+    "dotenv",
     "endregion",
     "Firestore",
     "Omni",
