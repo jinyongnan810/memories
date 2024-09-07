@@ -6,7 +6,8 @@
     "rootDir": "./src", // Source folder for TypeScript files
     "strict": true, // Enable strict type-checking options
     "esModuleInterop": true, // Ensure compatibility with CommonJS
-    "skipLibCheck": true // Skip type checking of declaration files
+    "skipLibCheck": true, // Skip type checking of declaration files
+    "resolveJsonModule": true // Allow importing JSON files
   },
-  "include": ["src/**/*"] // Include all TS files in the src folder
+  "include": ["src/**/*", "service_account/*"] // Include all TS files in the src folder
 }

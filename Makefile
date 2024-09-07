@@ -1,6 +1,9 @@
 publish:
 	rm -rf build && ./apply_env.sh && flutter build web --release && cp robots.txt build/web && firebase deploy --only=hosting
 
+publish-functions:
+	firebase deploy --only=functions
+
 build-app: 
 	dart run build_runner build --delete-conflicting-outputs
 
