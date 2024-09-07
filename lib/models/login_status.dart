@@ -9,6 +9,7 @@ class LoginStatus with _$LoginStatus {
     required String? email,
     required String? displayName,
     required String? photoUrl,
+    required String? idToken,
   }) = _LoginStatus;
 
   factory LoginStatus.empty() => const LoginStatus(
@@ -16,5 +17,6 @@ class LoginStatus with _$LoginStatus {
         email: null,
         displayName: null,
         photoUrl: null,
+        idToken: null,
       );
 }

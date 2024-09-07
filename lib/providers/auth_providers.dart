@@ -10,17 +10,23 @@ import 'package:memories/providers/user_providers.dart';
 class LoginStatusProvider extends Notifier<LoginStatus> {
   @override
   LoginStatus build() {
-    ref.listen(firebaseAuthChangesProvider, (prev, next) {
+    ref.listen(firebaseAuthChangesProvider, (prev, next) async {
       final user = next.valueOrNull;
       if (user != null) {
+        final idToken = await user.getIdToken();
+        if (idToken == null) {
+          state = LoginStatus.empty();
+          return;
+        }
         state = LoginStatus(
           userId: user.uid,
           email: user.email,
           displayName: user.displayName,
           photoUrl: user.photoURL,
+          idToken: idToken,
         );
         // TODO(kin): set proper access rules
-        FirebaseFirestore.instance.collection('users').doc(user.uid).set({
+        await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
           'email': user.email,
           'displayName': user.displayName,
           'photoUrl': user.photoURL,

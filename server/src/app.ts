@@ -1,5 +1,6 @@
 import express, { Application, Request, Response, NextFunction } from "express";
 import * as admin from "firebase-admin";
+import cors from "cors";
 import { errorHandler } from "./middlewares/error_handler";
 import { body, validationResult } from "express-validator";
 import { checkIfAuthenticated } from "./middlewares/auth";
@@ -13,7 +14,7 @@ admin.initializeApp({
 });
 
 const app: Application = express();
-
+app.use(cors());
 app.use(express.json());
 app.use(checkIfAuthenticated);
 
@@ -53,6 +54,9 @@ app.post(
       const targetUser = targetUserData.docs[0];
       if (!targetUser || !targetUser.exists) {
         throw new ApiError("target user not found", 404);
+      }
+      if (targetUser.id === userId) {
+        throw new ApiError("cannot add yourself", 400);
       }
       await targetUser.ref
         .collection("requests")

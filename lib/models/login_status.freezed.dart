@@ -20,6 +20,7 @@ mixin _$LoginStatus {
   String? get email => throw _privateConstructorUsedError;
   String? get displayName => throw _privateConstructorUsedError;
   String? get photoUrl => throw _privateConstructorUsedError;
+  String? get idToken => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $LoginStatusCopyWith<LoginStatus> get copyWith =>
@@ -33,7 +34,11 @@ abstract class $LoginStatusCopyWith<$Res> {
       _$LoginStatusCopyWithImpl<$Res, LoginStatus>;
   @useResult
   $Res call(
-      {String? userId, String? email, String? displayName, String? photoUrl});
+      {String? userId,
+      String? email,
+      String? displayName,
+      String? photoUrl,
+      String? idToken});
 }
 
 /// @nodoc
@@ -53,6 +58,7 @@ class _$LoginStatusCopyWithImpl<$Res, $Val extends LoginStatus>
     Object? email = freezed,
     Object? displayName = freezed,
     Object? photoUrl = freezed,
+    Object? idToken = freezed,
   }) {
     return _then(_value.copyWith(
       userId: freezed == userId
@@ -71,6 +77,10 @@ class _$LoginStatusCopyWithImpl<$Res, $Val extends LoginStatus>
           ? _value.photoUrl
           : photoUrl // ignore: cast_nullable_to_non_nullable
               as String?,
+      idToken: freezed == idToken
+          ? _value.idToken
+          : idToken // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -84,7 +94,11 @@ abstract class _$$LoginStatusImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String? userId, String? email, String? displayName, String? photoUrl});
+      {String? userId,
+      String? email,
+      String? displayName,
+      String? photoUrl,
+      String? idToken});
 }
 
 /// @nodoc
@@ -102,6 +116,7 @@ class __$$LoginStatusImplCopyWithImpl<$Res>
     Object? email = freezed,
     Object? displayName = freezed,
     Object? photoUrl = freezed,
+    Object? idToken = freezed,
   }) {
     return _then(_$LoginStatusImpl(
       userId: freezed == userId
@@ -120,6 +135,10 @@ class __$$LoginStatusImplCopyWithImpl<$Res>
           ? _value.photoUrl
           : photoUrl // ignore: cast_nullable_to_non_nullable
               as String?,
+      idToken: freezed == idToken
+          ? _value.idToken
+          : idToken // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -131,7 +150,8 @@ class _$LoginStatusImpl implements _LoginStatus {
       {required this.userId,
       required this.email,
       required this.displayName,
-      required this.photoUrl});
+      required this.photoUrl,
+      required this.idToken});
 
   @override
   final String? userId;
@@ -141,10 +161,12 @@ class _$LoginStatusImpl implements _LoginStatus {
   final String? displayName;
   @override
   final String? photoUrl;
+  @override
+  final String? idToken;
 
   @override
   String toString() {
-    return 'LoginStatus(userId: $userId, email: $email, displayName: $displayName, photoUrl: $photoUrl)';
+    return 'LoginStatus(userId: $userId, email: $email, displayName: $displayName, photoUrl: $photoUrl, idToken: $idToken)';
   }
 
   @override
@@ -157,12 +179,13 @@ class _$LoginStatusImpl implements _LoginStatus {
             (identical(other.displayName, displayName) ||
                 other.displayName == displayName) &&
             (identical(other.photoUrl, photoUrl) ||
-                other.photoUrl == photoUrl));
+                other.photoUrl == photoUrl) &&
+            (identical(other.idToken, idToken) || other.idToken == idToken));
   }
 
   @override
   int get hashCode =>
-      Object.hash(runtimeType, userId, email, displayName, photoUrl);
+      Object.hash(runtimeType, userId, email, displayName, photoUrl, idToken);
 
   @JsonKey(ignore: true)
   @override
@@ -176,7 +199,8 @@ abstract class _LoginStatus implements LoginStatus {
       {required final String? userId,
       required final String? email,
       required final String? displayName,
-      required final String? photoUrl}) = _$LoginStatusImpl;
+      required final String? photoUrl,
+      required final String? idToken}) = _$LoginStatusImpl;
 
   @override
   String? get userId;
@@ -186,6 +210,8 @@ abstract class _LoginStatus implements LoginStatus {
   String? get displayName;
   @override
   String? get photoUrl;
+  @override
+  String? get idToken;
   @override
   @JsonKey(ignore: true)
   _$$LoginStatusImplCopyWith<_$LoginStatusImpl> get copyWith =>
