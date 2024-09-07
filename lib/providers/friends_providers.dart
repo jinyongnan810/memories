@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_manual_providers_as_generated_provider_dependency
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:memories/helper/dio_helper.dart';
 import 'package:memories/models/friends.dart';
 import 'package:memories/providers/providers.dart';
@@ -11,6 +12,36 @@ part 'friends_providers.g.dart';
 class FriendsList extends _$FriendsList {
   @override
   Friends build() {
+    final userId = ref.watch(loginStatusProvider).userId;
+    ref.listen(loginStatusProvider, (prev, next) {
+      final userId = next.userId;
+      final previousUserId = prev?.userId;
+      if (userId == null && previousUserId != null) {
+        ref
+          ..invalidate(friendsStream(previousUserId))
+          ..invalidate(requestsStream(previousUserId));
+      }
+    });
+    if (userId == null) {
+      return const Friends();
+    }
+    ref
+      ..listen(
+        friendsStream(userId),
+        (prev, next) {
+          state = state.copyWith(
+            friends: next.valueOrNull ?? [],
+          );
+        },
+      )
+      ..listen(
+        requestsStream(userId),
+        (prev, next) {
+          state = state.copyWith(
+            requests: next.valueOrNull ?? [],
+          );
+        },
+      );
     return const Friends();
   }
 
@@ -109,3 +140,29 @@ class FriendsList extends _$FriendsList {
     }
   }
 }
+
+final friendsStream = StreamProvider.autoDispose.family<List<String>, String>(
+  (ref, userId) {
+    return FirebaseFirestore.instance
+        .collection('users')
+        .doc(userId)
+        .collection('friends')
+        .snapshots()
+        .asyncMap((snapshot) {
+      return snapshot.docs.map((e) => e.id).toList();
+    });
+  },
+);
+
+final requestsStream = StreamProvider.autoDispose.family<List<String>, String>(
+  (ref, userId) {
+    return FirebaseFirestore.instance
+        .collection('users')
+        .doc(userId)
+        .collection('requests')
+        .snapshots()
+        .asyncMap((snapshot) {
+      return snapshot.docs.map((e) => e.id).toList();
+    });
+  },
+);
