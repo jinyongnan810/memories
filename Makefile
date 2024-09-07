@@ -4,6 +4,9 @@ publish:
 publish-functions:
 	firebase deploy --only=functions
 
+server-dev:
+	npm run --prefix server dev
+
 build-app: 
 	dart run build_runner build --delete-conflicting-outputs
 
