@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:memories/components/dialogs/add_friend_dialog.dart';
 import 'package:memories/components/dialogs/delete_memory_dialog.dart';
 import 'package:memories/components/user_icon.dart';
@@ -22,8 +23,8 @@ class FriendsPage extends ConsumerWidget {
           actions: [
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12),
-              child: IconButton(
-                icon: const Icon(Icons.person_add),
+              child: _ActionButton(
+                text: '追加',
                 onPressed: () async {
                   final email = await showAddFriendDialog(context);
                   if (email != null) {
@@ -68,6 +69,7 @@ class FriendsPage extends ConsumerWidget {
               itemCount: friends.length,
               itemBuilder: (context, index) {
                 final friend = friends[index];
+
                 return ListTile(
                   leading: UserIcon(userId: friend),
                   title: _UserName(userId: friend),
@@ -75,8 +77,8 @@ class FriendsPage extends ConsumerWidget {
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      TextButton(
-                        child: const Text('削除する'),
+                      _ActionButton(
+                        text: '削除する',
                         onPressed: () async {
                           final confirm = await showDeleteDialog(context);
                           if (confirm != true) {
@@ -115,76 +117,83 @@ class FriendsPage extends ConsumerWidget {
             ListView.builder(
               itemCount: requests.length,
               itemBuilder: (context, index) {
-                final request = requests[index];
-                return ListTile(
-                  leading: UserIcon(userId: request),
-                  title: _UserName(userId: request),
-                  subtitle: _UserEmail(userId: request),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      TextButton(
-                        child: const Text('受け入れる'),
-                        onPressed: () async {
-                          try {
-                            await ref
-                                .read(friendsListProvider.notifier)
-                                .acceptFriend(request);
-                            if (!context.mounted) {
-                              return;
-                            }
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('友達を追加しました'),
-                              ),
-                            );
-                            // ignore: avoid_catches_without_on_clauses
-                          } catch (e) {
-                            if (!context.mounted) {
-                              return;
-                            }
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('友達の追加に失敗しました'),
-                              ),
-                            );
-                          }
-                        },
+                return HookBuilder(
+                  builder: (context) {
+                    final disabled = useState(false);
+                    final request = requests[index];
+                    return ListTile(
+                      leading: UserIcon(userId: request),
+                      title: _UserName(userId: request),
+                      subtitle: _UserEmail(userId: request),
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          _ActionButton(
+                            disabled: disabled,
+                            text: '受け入れる',
+                            onPressed: () async {
+                              try {
+                                await ref
+                                    .read(friendsListProvider.notifier)
+                                    .acceptFriend(request);
+                                if (!context.mounted) {
+                                  return;
+                                }
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('友達を追加しました'),
+                                  ),
+                                );
+                                // ignore: avoid_catches_without_on_clauses
+                              } catch (e) {
+                                if (!context.mounted) {
+                                  return;
+                                }
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('友達の追加に失敗しました'),
+                                  ),
+                                );
+                              }
+                            },
+                          ),
+                          _ActionButton(
+                            disabled: disabled,
+                            text: '削除する',
+                            onPressed: () async {
+                              try {
+                                final confirm = await showDeleteDialog(context);
+                                if (confirm != true) {
+                                  return;
+                                }
+                                await ref
+                                    .read(friendsListProvider.notifier)
+                                    .deleteFriendRequest(request);
+                                if (!context.mounted) {
+                                  return;
+                                }
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('友達のリクエストを削除しました'),
+                                  ),
+                                );
+                                // ignore: avoid_catches_without_on_clauses
+                              } catch (e) {
+                                if (!context.mounted) {
+                                  return;
+                                }
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('友達のリクエストの削除に失敗しました'),
+                                  ),
+                                );
+                              }
+                            },
+                          ),
+                        ],
                       ),
-                      TextButton(
-                        child: const Text('削除する'),
-                        onPressed: () async {
-                          try {
-                            final confirm = await showDeleteDialog(context);
-                            if (confirm != true) {
-                              return;
-                            }
-                            await ref
-                                .read(friendsListProvider.notifier)
-                                .deleteFriendRequest(request);
-                            if (!context.mounted) {
-                              return;
-                            }
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('友達のリクエストを削除しました'),
-                              ),
-                            );
-                            // ignore: avoid_catches_without_on_clauses
-                          } catch (e) {
-                            if (!context.mounted) {
-                              return;
-                            }
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('友達のリクエストの削除に失敗しました'),
-                              ),
-                            );
-                          }
-                        },
-                      ),
-                    ],
-                  ),
+                    );
+                  },
                 );
               },
             ),
@@ -252,6 +261,47 @@ class _BadgeTab extends StatelessWidget {
           ),
         ],
       ],
+    );
+  }
+}
+
+class _ActionButton extends HookConsumerWidget {
+  const _ActionButton({
+    required this.onPressed,
+    required this.text,
+    this.disabled,
+  });
+  final Future<void> Function() onPressed;
+  final String text;
+  final ValueNotifier<bool>? disabled;
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final loading = useState(false);
+    if (loading.value) {
+      return const SizedBox(
+        width: 80,
+        height: 40,
+        child: Center(
+          child: CircularProgressIndicator(strokeWidth: 1),
+        ),
+      );
+    }
+    return TextButton(
+      onPressed: (disabled == null || disabled!.value == false)
+          ? () async {
+              if (loading.value) {
+                return;
+              }
+              loading.value = true;
+              disabled?.value = true;
+              await onPressed();
+              loading.value = false;
+              disabled?.value = false;
+            }
+          : null,
+      child: Text(
+        text,
+      ),
     );
   }
 }
