@@ -9,6 +9,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:memories/firebase_options.dart';
 import 'package:memories/pages/add_memory_page.dart';
 import 'package:memories/pages/edit_memory_page.dart';
+import 'package:memories/pages/friends_page.dart';
 import 'package:memories/pages/home.dart';
 import 'package:memories/pages/memory_page.dart';
 
@@ -54,6 +55,10 @@ class MyApp extends StatelessWidget {
         path: '/',
         builder: (context, state) => const Home(),
         routes: [
+          GoRoute(
+            path: 'friends',
+            builder: (context, state) => const FriendsPage(),
+          ),
           GoRoute(
             path: 'add',
             builder: (context, state) => const AddMemoryPage(),

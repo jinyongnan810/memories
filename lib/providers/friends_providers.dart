@@ -67,6 +67,7 @@ class FriendsList extends _$FriendsList {
       // ignore: avoid_catches_without_on_clauses
     } catch (e) {
       ref.read(loggerProvider).e(e);
+      rethrow;
     }
   }
 
@@ -88,6 +89,7 @@ class FriendsList extends _$FriendsList {
       // ignore: avoid_catches_without_on_clauses
     } catch (e) {
       ref.read(loggerProvider).e(e);
+      rethrow;
     }
   }
 
@@ -113,6 +115,7 @@ class FriendsList extends _$FriendsList {
       // ignore: avoid_catches_without_on_clauses
     } catch (e) {
       ref.read(loggerProvider).e(e);
+      rethrow;
     }
   }
 
@@ -137,6 +140,7 @@ class FriendsList extends _$FriendsList {
       // ignore: avoid_catches_without_on_clauses
     } catch (e) {
       ref.read(loggerProvider).e(e);
+      rethrow;
     }
   }
 }

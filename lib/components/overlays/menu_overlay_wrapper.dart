@@ -3,7 +3,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_portal/flutter_portal.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:memories/components/sheets/marker_action_sheet.dart';
-import 'package:memories/providers/friends_providers.dart';
 import 'package:memories/providers/map_marker.dart';
 
 class MenuOverlayWrapper extends StatelessWidget {
@@ -37,9 +36,6 @@ class _MenuOverlay extends HookConsumerWidget {
       if (previous == next) {
         return;
       }
-      await ref
-          .read(friendsListProvider.notifier)
-          .requestFriend('yuunan.kin@gmail.com');
       await animationController.reverse();
       if (next != null) {
         await animationController.forward();

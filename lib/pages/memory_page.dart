@@ -83,7 +83,7 @@ class MemoryPage extends HookConsumerWidget {
                     IconButton(
                       icon: const Icon(Icons.delete),
                       onPressed: () async {
-                        final confirm = await showDeleteMemoryDialog(context);
+                        final confirm = await showDeleteDialog(context);
                         if (confirm == true) {}
                         await ref
                             .read(memoriesProvider.notifier)

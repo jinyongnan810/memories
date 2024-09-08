@@ -33,6 +33,7 @@ app.post(
   body("email").trim().isEmail().withMessage("Invalid email"),
   async (req: Request, res: Response, next: NextFunction) => {
     if (checkHasValidationError(req, res)) {
+      console.error("validation error");
       return;
     }
     const userId = req.app.locals.auth.user_id;
@@ -81,6 +82,7 @@ app.delete(
     .withMessage("Invalid userId"),
   async (req: Request, res: Response, next: NextFunction) => {
     if (checkHasValidationError(req, res)) {
+      console.error("validation error");
       return;
     }
     const userId = req.app.locals.auth.user_id;
@@ -116,6 +118,7 @@ app.post(
     .withMessage("Invalid userId"),
   async (req: Request, res: Response, next: NextFunction) => {
     if (checkHasValidationError(req, res)) {
+      console.error("validation error");
       return;
     }
     const userId = req.app.locals.auth.user_id;
@@ -136,8 +139,8 @@ app.post(
           console.error(err);
           throw new ApiError("get user request failed", 500);
         });
-      const targetRequest = targetRequestData.data();
-      if (!targetRequest || !targetRequest.exists) {
+      if (!targetRequestData.exists) {
+        console.log(`target user request not found`);
         throw new ApiError("target user request not found", 404);
       }
       await targetRequestData.ref.delete().catch((err) => {
@@ -168,6 +171,7 @@ app.post(
             throw new ApiError(`update friends failed(${targetUserId})`, 500);
           }),
       ]);
+      console.log(`hello3`);
       console.log(`accept friend request end`);
       res.status(200).send(`ok`);
     } catch (err) {
@@ -183,6 +187,7 @@ app.delete(
     .withMessage("Invalid userId"),
   async (req: Request, res: Response, next: NextFunction) => {
     if (checkHasValidationError(req, res)) {
+      console.error("validation error");
       return;
     }
     const userId = req.app.locals.auth.user_id;

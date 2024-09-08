@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_manual_providers_as_generated_provider_dependency
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:memories/models/memory.dart';
+import 'package:memories/providers/friends_providers.dart';
 import 'package:memories/providers/providers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -10,6 +11,7 @@ part 'memories.g.dart';
 class Memories extends _$Memories {
   @override
   Future<List<Memory>> build() async {
+    final friends = ref.watch(friendsListProvider.select((v) => v.friends));
     try {
       final memoriesSnapshot =
           await FirebaseFirestore.instance.collection('memories').get();
