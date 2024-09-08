@@ -12,9 +12,14 @@ class Memories extends _$Memories {
   @override
   Future<List<Memory>> build() async {
     final friends = ref.watch(friendsListProvider.select((v) => v.friends));
+    final userId = ref.watch(loginStatusProvider.select((v) => v.userId));
+    if (userId == null) {
+      return [];
+    }
     try {
-      final memoriesSnapshot =
-          await FirebaseFirestore.instance.collection('memories').get();
+      final memoriesSnapshot = await FirebaseFirestore.instance
+          .collection('memories')
+          .where('userId', whereIn: [userId, ...friends]).get();
       final memories = memoriesSnapshot.docs.map((e) {
         final data = e.data();
 
@@ -148,23 +153,29 @@ class Memories extends _$Memories {
 
 @riverpod
 Future<Memory?> fetchMemory(FetchMemoryRef ref, {required String id}) async {
-  final doc =
-      await FirebaseFirestore.instance.collection('memories').doc(id).get();
-  if (!doc.exists) {
-    return null;
+  try {
+    final doc =
+        await FirebaseFirestore.instance.collection('memories').doc(id).get();
+    if (!doc.exists) {
+      return null;
+    }
+    final data = doc.data();
+    if (data == null) {
+      return null;
+    }
+    return Memory(
+      id: doc.id,
+      userId: data['userId'] as String,
+      location: data['location'] as GeoPoint,
+      startAt: (data['startAt'] as Timestamp).toDate(),
+      endAt: (data['endAt'] as Timestamp).toDate(),
+      updatedAt: (data['updatedAt'] as Timestamp).toDate(),
+      title: data['title'] as String,
+      contents: data['contents'] as String,
+    );
+    // ignore: avoid_catches_without_on_clauses
+  } catch (e) {
+    ref.read(loggerProvider).e('⭐️ fetchMemory error: $e');
+    return Future.error(e);
   }
-  final data = doc.data();
-  if (data == null) {
-    return null;
-  }
-  return Memory(
-    id: doc.id,
-    userId: data['userId'] as String,
-    location: data['location'] as GeoPoint,
-    startAt: (data['startAt'] as Timestamp).toDate(),
-    endAt: (data['endAt'] as Timestamp).toDate(),
-    updatedAt: (data['updatedAt'] as Timestamp).toDate(),
-    title: data['title'] as String,
-    contents: data['contents'] as String,
-  );
 }

@@ -39,7 +39,12 @@ class MemoryPage extends HookConsumerWidget {
     );
     final focusNode = useFocusNode();
     final memory = useState<Memory?>(null);
+    final hasError = useState<bool>(false);
     ref.listen(fetchMemoryProvider(id: id!), (prev, next) {
+      if (next is AsyncError) {
+        hasError.value = true;
+        return;
+      }
       final data = next.valueOrNull;
       if (data != null) {
         final json = jsonDecode(data.contents) as List;
@@ -48,10 +53,23 @@ class MemoryPage extends HookConsumerWidget {
         focusNode.requestFocus();
       }
     });
+    if (hasError.value) {
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('取得エラー'),
+        ),
+        body: const Center(
+          child: Text('この思い出にアクセスできませんでした。'),
+        ),
+      );
+    }
 
     if (memory.value == null) {
-      return const Scaffold(
-        body: Center(
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('取得中…'),
+        ),
+        body: const Center(
           child: CircularProgressIndicator(),
         ),
       );

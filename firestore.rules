@@ -2,8 +2,25 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /{document=**} {
-      allow read, write: if true;
+    match /memories/{memoryId}/{allPaths=**} {
+      allow read: if request.auth != null && 
+      	(resource.data.userId == request.auth.uid 
+        || 
+        exists(/databases/$(database)/documents/users/$(resource.data.userId)/friends/$(request.auth.uid))
+        );
+      allow create, update, delete: 
+      		if request.auth != null && resource.data.userId == request.auth.uid;
+    }
+    match /users/{userId}/{allPaths=**} {
+      allow read: if request.auth != null && 
+      	(userId == request.auth.uid 
+        || 
+        exists(/databases/$(database)/documents/users/$(userId)/friends/$(request.auth.uid))
+        ||
+        exists(/databases/$(database)/documents/users/$(request.auth.uid)/requests/$(userId))
+        );
+      allow create, update, delete: 
+      		if request.auth != null && userId == request.auth.uid;
     }
   }
 }
