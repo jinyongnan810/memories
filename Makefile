@@ -1,7 +1,7 @@
 publish:
-	rm -rf build && ./apply_env.sh && flutter build web --release && cp robots.txt build/web && firebase deploy --only=hosting
+	rm -rf build && ./apply_env.sh && flutter build web --release && cp robots.txt build/web && cp env build/web && firebase deploy --only=hosting
 
-publish-functions:
+publish-server:
 	firebase deploy --only=functions
 
 server-dev:
