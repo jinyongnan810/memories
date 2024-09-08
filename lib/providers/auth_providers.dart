@@ -25,7 +25,6 @@ class LoginStatusProvider extends Notifier<LoginStatus> {
           photoUrl: user.photoURL,
           idToken: idToken,
         );
-        // TODO(kin): set proper access rules
         await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
           'email': user.email,
           'displayName': user.displayName,

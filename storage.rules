@@ -5,8 +5,10 @@ rules_version = '2';
 //    /databases/(default)/documents/users/$(request.auth.uid)).data.isAdmin;
 service firebase.storage {
   match /b/{bucket}/o {
-    match /{allPaths=**} {
-      allow read, write: if false;
+    match /images/{userId}/{allPaths=**} {
+      // 友達制限もできるが、やりすぎな気がするので、一旦認証のみ要求する
+      allow read: if request.auth != null; // && (request.auth.uid == userId || firestore.exists(/databases/(default)/documents/users/$(userId)/friends/$(request.auth.uid)));
+      allow write: if request.auth != null && request.auth.uid == userId;
     }
   }
 }
