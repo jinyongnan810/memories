@@ -1,4 +1,4 @@
-name: CI/function
+name: CI/server
 
 on:
   workflow_dispatch:
