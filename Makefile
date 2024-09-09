@@ -1,10 +1,10 @@
 COMMON_BUILD_CMDS = rm -rf build && ./apply_env.sh && flutter build web --release && cp robots.txt build/web && cp env build/web
 
 publish:
-    $(COMMON_BUILD_CMDS) && firebase deploy --only=hosting
+	$(COMMON_BUILD_CMDS) && firebase deploy --only=hosting
 
 prepare-publish:
-    $(COMMON_BUILD_CMDS)
+	$(COMMON_BUILD_CMDS)
 
 publish-server:
 	firebase deploy --only=functions
