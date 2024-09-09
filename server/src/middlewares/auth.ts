@@ -1,18 +1,18 @@
-import { Request, Response, NextFunction } from "express";
-import admin from "firebase-admin";
+import { Request, Response, NextFunction } from 'express';
+import admin from 'firebase-admin';
 export const checkIfAuthenticated = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
-  const idToken = req.headers.authorization?.split("Bearer ")[1];
+  const idToken = req.headers.authorization?.split('Bearer ')[1];
   if (!idToken) {
-    return res.status(403).send("Unauthorized");
+    return res.status(403).send('Unauthorized');
   }
   try {
     req.app.locals.auth = await admin.auth().verifyIdToken(idToken);
     next();
   } catch {
-    return res.status(403).send("Unauthorized or invalid token");
+    return res.status(403).send('Unauthorized or invalid token');
   }
 };
