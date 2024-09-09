@@ -4,6 +4,7 @@ import cors from "cors";
 import { errorHandler } from "./middlewares/error_handler";
 import { body, param, validationResult } from "express-validator";
 import { checkIfAuthenticated } from "./middlewares/auth";
+import { ApiError } from "./types/api_error";
 
 admin.initializeApp({
   //   credential: admin.credential.cert(serviceAccount as admin.ServiceAccount),

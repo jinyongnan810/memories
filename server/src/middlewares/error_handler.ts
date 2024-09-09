@@ -1,4 +1,5 @@
-import express, { Application, Request, Response, NextFunction } from "express";
+import { Request, Response, NextFunction } from "express";
+import { ApiError } from "../types/api_error";
 export const errorHandler = async (
   err: ApiError,
   _req: Request,

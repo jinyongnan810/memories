@@ -1,4 +1,4 @@
-import express, { Application, Request, Response, NextFunction } from "express";
+import { Request, Response, NextFunction } from "express";
 import admin from "firebase-admin";
 export const checkIfAuthenticated = async (
   req: Request,
@@ -12,7 +12,7 @@ export const checkIfAuthenticated = async (
   try {
     req.app.locals.auth = await admin.auth().verifyIdToken(idToken);
     next();
-  } catch (error) {
+  } catch {
     return res.status(403).send("Unauthorized or invalid token");
   }
 };
