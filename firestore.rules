@@ -9,7 +9,7 @@ service cloud.firestore {
         exists(/databases/$(database)/documents/users/$(resource.data.userId)/friends/$(request.auth.uid))
         );
       allow create, update, delete: 
-      		if request.auth != null && resource.data.userId == request.auth.uid;
+      		if request.auth != null && (resource.data.userId == request.auth.uid && request.resource.data.userId == request.auth.uid);
     }
     match /users/{userId}/{allPaths=**} {
       allow read: if request.auth != null && 
