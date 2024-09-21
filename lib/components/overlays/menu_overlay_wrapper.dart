@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_portal/flutter_portal.dart';
@@ -29,19 +30,19 @@ class _MenuOverlay extends HookConsumerWidget {
       duration: const Duration(milliseconds: 200),
       reverseDuration: const Duration(milliseconds: 200),
     );
-    final selectedLocation =
-        ref.watch(mapMarkerProvider.select((v) => v.selectedLocation));
+    final selectedLocation = useState<GeoPoint?>(null);
     ref.listen(mapMarkerProvider.select((v) => v.selectedLocation),
         (previous, next) async {
       if (previous == next) {
         return;
       }
       await animationController.reverse();
+      selectedLocation.value = next;
       if (next != null) {
         await animationController.forward();
       }
     });
-    if (selectedLocation == null) {
+    if (selectedLocation.value == null) {
       return const SizedBox.shrink();
     }
     return Stack(
@@ -52,7 +53,7 @@ class _MenuOverlay extends HookConsumerWidget {
             position: _slideTween.animate(animationController),
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 400),
-              child: MarkerActionSheet(location: selectedLocation),
+              child: MarkerActionSheet(location: selectedLocation.value!),
             ),
           ),
         ),
