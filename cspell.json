@@ -3,7 +3,7 @@
     { "name": "memories", "path": "./dictionaries/memories.txt" },
     { "name": "dependencies", "path": "./dictionaries/dependencies.txt" }
   ],
-  "dictionaries": ["nework", "dependencies"],
+  "dictionaries": ["memories", "dependencies"],
   "ignorePaths": ["*.freezed.dart", "*.g.dart", "lib/firebase_options.dart"],
   "enabledLanguageIds": ["dart", "swift", "kotlin"]
 }

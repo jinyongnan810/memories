@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -32,9 +33,12 @@ class MapView extends ConsumerWidget {
       zoomControlsEnabled: false,
 
       onTap: (latLng) {
-        if (mapMarkerStatus.selectedLocation != null) {
-          ref.read(mapMarkerProvider.notifier).clearSelectedLocation();
-          return;
+        // web版の場合、上に被った別UIタップしてもタップと判定されるので色々不都合があるため、一旦選択を解除する
+        if (kIsWeb) {
+          if (mapMarkerStatus.selectedLocation != null) {
+            ref.read(mapMarkerProvider.notifier).clearSelectedLocation();
+            return;
+          }
         }
         ref.read(mapMarkerProvider.notifier).setSelectedLocation(
               GeoPoint(latLng.latitude, latLng.longitude),
