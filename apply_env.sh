@@ -9,10 +9,10 @@ OS_TYPE=$(uname)
 # Step 3: Set the sed command based on the OS
 if [ "$OS_TYPE" = "Darwin" ]; then
     # macOS
-    SED_COMMAND="sed -i '' \"s/YOUR_API_KEY/${API_KEY}/g\" web/index.html"
+    SED_COMMAND="sed -i '' \"s/YOUR_API_KEY/${API_KEY}/g\" web/index.html && sed -i '' \"s/YOUR_API_KEY/${API_KEY}/g\" android/app/src/main/AndroidManifest.xml"
 else
     # Linux (Ubuntu)
-    SED_COMMAND="sed -i \"s/YOUR_API_KEY/${API_KEY}/g\" web/index.html"
+    SED_COMMAND="sed -i \"s/YOUR_API_KEY/${API_KEY}/g\" web/index.html && sed -i \"s/YOUR_API_KEY/${API_KEY}/g\" android/app/src/main/AndroidManifest.xml"
 fi
 
 # Step 4: Execute the sed command

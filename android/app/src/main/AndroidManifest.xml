@@ -45,3 +45,4 @@
         </intent>
     </queries>
 </manifest>
+<!-- to re-detect changes in this file, use `git update-index --no-assume-unchanged android/app/src/main/AndroidManifest.xml` -->
