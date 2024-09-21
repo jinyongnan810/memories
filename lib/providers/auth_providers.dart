@@ -2,8 +2,9 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:memories/models/login_status.dart';
 import 'package:memories/providers/user_providers.dart';
 
@@ -39,9 +40,23 @@ class LoginStatusProvider extends Notifier<LoginStatus> {
   }
 
   Future<void> login() async {
-    final googleProvider = GoogleAuthProvider();
     try {
-      await FirebaseAuth.instance.signInWithPopup(googleProvider);
+      if (kIsWeb) {
+        final googleProvider = GoogleAuthProvider();
+        await FirebaseAuth.instance.signInWithPopup(googleProvider);
+        return;
+      }
+      final googleSignIn = GoogleSignIn();
+      final user = await googleSignIn.signIn();
+      if (user == null) {
+        return;
+      }
+      final auth = await user.authentication;
+      final credential = GoogleAuthProvider.credential(
+        accessToken: auth.accessToken,
+        idToken: auth.idToken,
+      );
+      await FirebaseAuth.instance.signInWithCredential(credential);
     } on FirebaseAuthException catch (e) {
       debugPrint('Login failed with error code: ${e.code}');
       // ignore: avoid_catches_without_on_clauses
