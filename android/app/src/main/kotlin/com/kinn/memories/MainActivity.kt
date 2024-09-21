@@ -1,4 +1,4 @@
-package com.example.memories
+package com.kinn.memories
 
 import io.flutter.embedding.android.FlutterActivity
 

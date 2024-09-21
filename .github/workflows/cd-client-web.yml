@@ -1,17 +1,17 @@
-name: CD/client
+name: CD/client-web
 
 on:
   workflow_dispatch:
   push:
     branches:
       - main
-    paths-ignore:
-      - "server/**"
+    paths:
+      - "lib/**"
   pull_request:
     branches:
       - "**"
-    paths-ignore:
-      - "server/**"
+    paths:
+      - "lib/**"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "925899038090",
+    "project_id": "memories-f3a84",
+    "storage_bucket": "memories-f3a84.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:925899038090:android:743f7da200695e91d97c73",
+        "android_client_info": {
+          "package_name": "com.kinn.memories"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "925899038090-278vrbcn4ognk0updhol5nico9fjff53.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCHKZEan8EGiwBSvOIbt3-xvLwFINUDsGw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "925899038090-278vrbcn4ognk0updhol5nico9fjff53.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
