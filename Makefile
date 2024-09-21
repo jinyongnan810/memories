@@ -18,8 +18,8 @@ build-app:
 watch:
 	dart run build_runner watch --delete-conflicting-outputs
 
-assume-changed-android:
+assume-unchanged-android:
 	git update-index --assume-unchanged android/app/src/main/AndroidManifest.xml
 
-no-assume-changed-android:
+no-assume-unchanged-android:
 	git update-index --no-assume-unchanged android/app/src/main/AndroidManifest.xml
