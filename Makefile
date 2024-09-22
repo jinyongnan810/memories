@@ -23,3 +23,9 @@ assume-unchanged-android:
 
 no-assume-unchanged-android:
 	git update-index --no-assume-unchanged android/app/src/main/AndroidManifest.xml
+
+assume-unchanged-ios: 
+	git update-index --assume-unchanged ios/Runner/AppDelegate.swift
+
+no-assume-unchanged-ios:
+	git update-index --no-assume-unchanged ios/Runner/AppDelegate.swift
