@@ -238,29 +238,32 @@ class _BadgeTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Center(child: Text(text)),
-        if (unreadCount > 0) ...[
-          const SizedBox(width: 4),
-          Container(
-            padding: const EdgeInsets.all(4),
-            decoration: const BoxDecoration(
-              color: Colors.blue,
-              shape: BoxShape.circle,
-            ),
-            child: Text(
-              '$unreadCount',
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 12,
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 12),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Center(child: Text(text)),
+          if (unreadCount > 0) ...[
+            const SizedBox(width: 4),
+            Container(
+              padding: const EdgeInsets.all(4),
+              decoration: const BoxDecoration(
+                color: Colors.blue,
+                shape: BoxShape.circle,
               ),
-              textAlign: TextAlign.center,
+              child: Text(
+                '$unreadCount',
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 12,
+                ),
+                textAlign: TextAlign.center,
+              ),
             ),
-          ),
+          ],
         ],
-      ],
+      ),
     );
   }
 }
