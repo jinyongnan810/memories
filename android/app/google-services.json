@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "925899038090-dndaravp7erioedo1d2jk1um0v76ifo7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kinn.memories",
+            "certificate_hash": "911cc043e2b52801a1c0a2da38b2c37e8f5c91a5"
+          }
+        },
+        {
           "client_id": "925899038090-278vrbcn4ognk0updhol5nico9fjff53.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,6 +37,13 @@
             {
               "client_id": "925899038090-278vrbcn4ognk0updhol5nico9fjff53.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "925899038090-oa3ogrb6f5o55q915rujtqa8ibd251tg.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.kinn.memories"
+              }
             }
           ]
         }
