@@ -19,7 +19,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  function:
+  ci-client-ios:
     runs-on: macos-14
     if: github.event.pull_request.draft == false
     defaults:
@@ -69,4 +69,4 @@ jobs:
 
       - name: Lint iOS
         working-directory: ios
-        run: Pods/SwiftLint/swiftlint lint ios/ --strict --config ios/.swiftlint.yml --reporter markdown > reports/ios-lint.md
+        run: Pods/SwiftLint/swiftlint lint . --strict --config .swiftlint.yml

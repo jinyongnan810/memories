@@ -18,7 +18,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  function:
+  cd-server:
     runs-on: ubuntu-latest
     defaults:
       run:

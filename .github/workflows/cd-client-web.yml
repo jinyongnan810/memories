@@ -19,7 +19,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  function:
+  cd-client-web:
     runs-on: ubuntu-latest
     if: github.event.pull_request.draft == false
     defaults:
