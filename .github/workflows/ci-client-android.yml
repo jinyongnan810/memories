@@ -8,6 +8,7 @@ on:
     paths:
       - "android/**"
   pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
     branches:
       - "**"
     paths:
@@ -20,6 +21,7 @@ concurrency:
 jobs:
   function:
     runs-on: ubuntu-latest
+    if: github.event.pull_request.draft == false
     defaults:
       run:
         working-directory: .

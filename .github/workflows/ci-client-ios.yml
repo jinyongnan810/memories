@@ -1,4 +1,4 @@
-name: CI/client-web
+name: CI/client-ios
 
 on:
   workflow_dispatch:
@@ -6,13 +6,13 @@ on:
     branches:
       - main
     paths:
-      - "lib/**"
+      - "ios/**"
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
     branches:
       - "**"
     paths:
-      - "lib/**"
+      - "ios/**"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -20,7 +20,7 @@ concurrency:
 
 jobs:
   function:
-    runs-on: ubuntu-latest
+    runs-on: macos-14
     if: github.event.pull_request.draft == false
     defaults:
       run:
@@ -29,16 +29,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Use Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-java@v4
         with:
-          node-version: "20"
-
-      - name: Install Code Spell Checker
-        run: npm install -g cspell
-
-      - name: Check Code Spell
-        run: cspell "**/*.{dart,swift,kt}"
+          distribution: "zulu"
+          java-version: "17"
 
       - name: Get Flutter version
         run: |
@@ -50,6 +44,13 @@ jobs:
         with:
           path: /opt/hostedtoolcache/flutter
           key: ${{ runner.OS }}-flutter-${{ env.FLUTTER_VERSION }}
+      - name: Cache Pods
+        uses: actions/cache@v4
+        with:
+          path: ios/Pods
+          key: pods-${{ hashFiles('**/Podfile.lock') }}
+          restore-keys: |
+            pods-
       - name: Install Flutter
         uses: subosito/flutter-action@v2
         with:
@@ -62,7 +63,10 @@ jobs:
         env:
           CLIENT_ENV: ${{ secrets.CLIENT_ENV }}
         run: echo "${CLIENT_ENV}" > env
-      - name: Analyze
-        run: flutter analyze
-    #   - name: Test
-    #     run: flutter test
+      - name: Install Pods
+        working-directory: ios
+        run: pod install
+
+      - name: Lint iOS
+        working-directory: ios
+        run: Pods/SwiftLint/swiftlint lint ios/ --strict --config ios/.swiftlint.yml --reporter markdown > reports/ios-lint.md
