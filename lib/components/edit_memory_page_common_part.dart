@@ -315,6 +315,7 @@ class _ContentsEditorState extends ConsumerState<_ContentsEditor> {
                 onPressed: _setImageTitle,
               ),
             ],
+            toolbarSectionSpacing: 2,
             showFontFamily: false,
             showBackgroundColorButton: false,
             showSubscript: false,
@@ -351,7 +352,7 @@ class _ContentsEditorState extends ConsumerState<_ContentsEditor> {
             },
           ),
         ),
-        const SizedBox(height: 48),
+        const SizedBox(height: 4),
         Expanded(
           child: QuillEditor.basic(
             configurations: QuillEditorConfigurations(
