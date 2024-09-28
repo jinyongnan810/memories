@@ -11,7 +11,6 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:memories/components/dialogs/image_title_input_dialog.dart';
-import 'package:memories/components/helper/duration_helper.dart';
 import 'package:memories/providers/auth_providers.dart';
 import 'package:memories/providers/logger_providers.dart';
 import 'package:memories/providers/memories.dart';
@@ -42,8 +41,8 @@ class EditMemoryPageCommonPart extends HookConsumerWidget {
     final isReadyToEdit = useState(id == null);
     final isSaving = useState(false);
     final location = useState<GeoPoint>(geoPoint);
-    final startDateTime = useState<DateTime?>(null);
-    final endDateTime = useState<DateTime?>(null);
+    final startDateTime = useState<DateTime>(DateTime.now());
+    final endDateTime = useState<DateTime>(DateTime.now());
     final title = useState<String>('');
     final titleTextEditingController =
         useTextEditingController(text: title.value);
@@ -73,10 +72,8 @@ class EditMemoryPageCommonPart extends HookConsumerWidget {
     pickDuration() async {
       final dateTimeList = await showOmniDateTimeRangePicker(
         context: context,
-        startInitialDate:
-            startDateTime.value == null ? DateTime.now() : startDateTime.value!,
-        endInitialDate:
-            endDateTime.value == null ? DateTime.now() : endDateTime.value!,
+        startInitialDate: startDateTime.value,
+        endInitialDate: endDateTime.value,
         barrierDismissible: true,
         constraints: const BoxConstraints(maxWidth: 400),
         startWidget: const Text('開始日時'),
@@ -123,14 +120,10 @@ class EditMemoryPageCommonPart extends HookConsumerWidget {
               ),
               actions: [
                 Tooltip(
-                  message: startDateTime.value != null
-                      ? durationString(startDateTime.value!, endDateTime.value!)
-                      : '思い出の期間を選択',
+                  message: '思い出の期間を選択',
                   child: IconButton(
                     onPressed: pickDuration,
-                    icon: startDateTime.value != null
-                        ? const Icon(Icons.event_available)
-                        : const Icon(Icons.event_busy),
+                    icon: const Icon(Icons.event_available),
                   ),
                 ),
                 Tooltip(
@@ -141,12 +134,6 @@ class EditMemoryPageCommonPart extends HookConsumerWidget {
                       if (title.value.isEmpty) {
                         showSnackbar(context, 'タイトルが入力されていません。');
                         titleFocusNode.requestFocus();
-                        return;
-                      }
-                      if (startDateTime.value == null ||
-                          endDateTime.value == null) {
-                        showSnackbar(context, '思い出の期間が設定されていません。');
-                        await pickDuration();
                         return;
                       }
                       if (controller.document.isEmpty()) {
@@ -166,8 +153,8 @@ class EditMemoryPageCommonPart extends HookConsumerWidget {
                                     controller.document.toDelta().toJson(),
                                   ),
                                   location: location.value,
-                                  startAt: startDateTime.value!,
-                                  endAt: endDateTime.value!,
+                                  startAt: startDateTime.value,
+                                  endAt: endDateTime.value,
                                 );
                         if (context.mounted) {
                           if (addedId == null) {
@@ -186,8 +173,8 @@ class EditMemoryPageCommonPart extends HookConsumerWidget {
                                 controller.document.toDelta().toJson(),
                               ),
                               location: location.value,
-                              startAt: startDateTime.value!,
-                              endAt: endDateTime.value!,
+                              startAt: startDateTime.value,
+                              endAt: endDateTime.value,
                             );
                         if (context.mounted) {
                           GoRouter.of(context).go('/');
