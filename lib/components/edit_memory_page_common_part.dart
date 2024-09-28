@@ -70,30 +70,35 @@ class EditMemoryPageCommonPart extends HookConsumerWidget {
 
     // ignore: always_declare_return_types
     pickDuration() async {
-      final dateTimeList = await showOmniDateTimeRangePicker(
+      final dateTime = await showOmniDateTimePicker(
         context: context,
-        startInitialDate: startDateTime.value,
-        endInitialDate: endDateTime.value,
+        // startInitialDate: startDateTime.value,
+        // endInitialDate: endDateTime.value,
+        initialDate: startDateTime.value,
         barrierDismissible: true,
         constraints: const BoxConstraints(maxWidth: 400),
-        startWidget: const Text('開始日時'),
-        endWidget: const Text('終了日時'),
-        isForceEndDateAfterStartDate: true,
+        title: const Padding(
+          padding: EdgeInsets.symmetric(vertical: 12),
+          child: Text('日付の選択'),
+        ),
+        // startWidget: const Text('開始日時'),
+        // endWidget: const Text('終了日時'),
+        // isForceEndDateAfterStartDate: true,
         is24HourMode: true,
-        minutesInterval: 15,
+        // minutesInterval: 15,
         type: OmniDateTimePickerType.date,
-        onStartDateAfterEndDateError: () {
-          Navigator.of(context).pop();
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('開始日時は終了日時より前に設定してください。'),
-            ),
-          );
-        },
+        // onStartDateAfterEndDateError: () {
+        //   Navigator.of(context).pop();
+        //   ScaffoldMessenger.of(context).showSnackBar(
+        //     const SnackBar(
+        //       content: Text('開始日時は終了日時より前に設定してください。'),
+        //     ),
+        //   );
+        // },
       );
-      if (dateTimeList != null) {
-        startDateTime.value = dateTimeList[0];
-        endDateTime.value = dateTimeList[1];
+      if (dateTime != null) {
+        startDateTime.value = dateTime;
+        // endDateTime.value = dateTimeList[1];
       }
     }
 
@@ -120,7 +125,7 @@ class EditMemoryPageCommonPart extends HookConsumerWidget {
               ),
               actions: [
                 Tooltip(
-                  message: '思い出の期間を選択',
+                  message: '思い出の日付を選択',
                   child: IconButton(
                     onPressed: pickDuration,
                     icon: const Icon(Icons.event_available),
