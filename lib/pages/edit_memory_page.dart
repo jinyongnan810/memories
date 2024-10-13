@@ -16,6 +16,9 @@ class EditMemoryPage extends HookConsumerWidget {
     useEffect(
       () {
         Future(() {
+          if (!context.mounted) {
+            return;
+          }
           if (ref.read(loginStatusProvider).userId == null) {
             Navigator.of(context).pop();
             return;
