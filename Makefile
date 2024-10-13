@@ -18,6 +18,12 @@ build-app:
 watch:
 	dart run build_runner watch --delete-conflicting-outputs
 
+assume-unchanged-web:
+	git update-index --assume-unchanged web/index.html
+
+no-assume-unchanged-web:
+	git update-index --no-assume-unchanged web/index.html
+
 assume-unchanged-android:
 	git update-index --assume-unchanged android/app/src/main/AndroidManifest.xml
 
@@ -29,3 +35,6 @@ assume-unchanged-ios:
 
 no-assume-unchanged-ios:
 	git update-index --no-assume-unchanged ios/Runner/AppDelegate.swift
+
+splash:
+	dart run flutter_native_splash:create --path=flutter_native_splash.yaml
