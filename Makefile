@@ -38,3 +38,6 @@ no-assume-unchanged-ios:
 
 splash:
 	dart run flutter_native_splash:create --path=flutter_native_splash.yaml
+
+icons:
+	dart run flutter_launcher_icons
