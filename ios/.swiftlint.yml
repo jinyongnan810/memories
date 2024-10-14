@@ -1,0 +1,66 @@
+# Enable only the necessary rules and configure them
+
+# Define excluded files and directories
+excluded: # paths to exclude from linting
+  - Carthage
+  - Pods
+  - fastlane
+  - build
+  - Generated
+
+# Disable some rules (if needed)
+disabled_rules:
+  - trailing_whitespace # Disable trailing whitespace rule
+  - line_length # Disable max line length
+  - identifier_name # Disable short variable name warnings (for i/j in loops, etc.)
+
+# Custom configuration for specific rules
+line_length:
+  warning: 120 # Set line length warning limit to 120 characters
+  error: 150 # Set line length error limit to 150 characters
+  ignores_comments: true # Ignore long lines in comments and strings
+  ignores_urls: true # Ignore long URLs
+
+trailing_whitespace:
+  ignores_empty_lines: true # Allow trailing whitespace on empty lines
+
+type_body_length:
+  warning: 300 # Warning at 300 lines per class/struct/enum
+  error: 400 # Error at 400 lines per class/struct/enum
+
+function_body_length:
+  warning: 40 # Warning at 40 lines per function
+  error: 60 # Error at 60 lines per function
+
+type_name:
+  min_length: 3 # Type names must be at least 3 characters long
+  max_length: 40 # Type names must not be longer than 40 characters
+
+identifier_name:
+  min_length: 3 # Variable names must be at least 3 characters long
+  max_length: 40 # Variable names must not be longer than 40 characters
+  excluded:
+    - id # Allow 'id' as an identifier
+
+cyclomatic_complexity:
+  ignores_case_statements: true # Ignore case statements for complexity
+
+nesting:
+  type_level: 3 # Maximum nesting of 3 levels within types
+  function_level: 2 # Maximum nesting of 2 levels within functions
+
+# Exclude test files from some rules
+opt_in_rules:
+  - empty_count # Warn when using `count == 0` instead of `.isEmpty`
+
+# Allow todos and fixmes in the code (optional)
+todo:
+  severity: warning # Just give a warning when TODO/FIXME is found
+fixme:
+  severity: warning
+
+# If you want to treat certain rules more strictly
+force_cast:
+  severity: error # Enforce no forced casts
+force_try:
+  severity: error # Enforce no forced try

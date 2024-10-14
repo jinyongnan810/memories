@@ -1,17 +1,17 @@
-# Memories
-## Purpose
-- Provide convenient way to add and view memories by the location.
+# 思い出の星空/Memories
+## 目標/Purpose
+- 場所と思い出結びつけて記録するアプリ。/Provide convenient way to add and view memories by the location.
 
 ## Learning
 - [Memos](memos.md)
 
 ## Roadmap
-- [ ] Basic installation
-  - [ ] Add memories to a location
-  - [ ] View memories on the map
-  - [ ] User login
-  - [ ] Add friends
-  - [ ] View friends' memories
+- [x] Basic installation
+  - [x] Add memories to a location
+  - [x] View memories on the map
+  - [x] User login
+  - [x] Add friends
+  - [x] View friends' memories
 - [ ] Business installation
   - [ ] Check similar services
   - [ ] Mobile app
@@ -25,11 +25,11 @@
 - [x] Display map
 - [x] Add google login
 - [x] Add marker to map
-- [ ] Create memories based on location
+- [x] Create memories based on location
 - [x] Read memories based on location
-- [ ] Show all user's memories
+- [x] Show all user's memories
 - [x] Splash screen
 
 ### Step 2
-- [ ] Add friends
-- [ ] Limit the memories to the user's friends
+- [x] Add friends
+- [x] Limit the memories to the user's friends
