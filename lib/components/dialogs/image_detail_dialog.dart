@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// TODO: create hero animation
 Future<void> showImageDetailDialog(BuildContext context, String url) async {
   return showDialog(
     context: context,
