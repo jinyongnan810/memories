@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 Future<void> showImageDetailDialog(BuildContext context, String url) async {
@@ -25,7 +24,7 @@ class ImageDetailDialog extends StatelessWidget {
         child: InteractiveViewer(
           maxScale: 10,
           minScale: 0.1,
-          child: CachedNetworkImage(imageUrl: url),
+          child: Image.network(url),
         ),
       ),
     );
