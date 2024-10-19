@@ -1,7 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:memories/components/dialogs/image_detail_dialog.dart';
-import 'package:memories/helper/size_helper.dart';
 
 class ImageEmbedBuilder extends EmbedBuilder {
   const ImageEmbedBuilder();
@@ -22,29 +22,28 @@ class ImageEmbedBuilder extends EmbedBuilder {
     if (src == null) {
       return const SizedBox();
     }
-    final image = Padding(
-      padding: const EdgeInsets.symmetric(vertical: 12),
-      child: Center(
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 12),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(12),
           child: GestureDetector(
             onTap: () {
               showImageDetailDialog(context, src);
             },
-            child: Image.network(src),
+            child: CachedNetworkImage(
+              imageUrl: src,
+              width: 600,
+              placeholder: (_, __) {
+                return const AspectRatio(
+                  aspectRatio: 1.78,
+                  child: Center(child: CircularProgressIndicator()),
+                );
+              },
+            ),
           ),
         ),
       ),
     );
-    return SizeHelper.isSmallDevice(context)
-        ? ConstrainedBox(
-            constraints: const BoxConstraints(
-              maxWidth: 500,
-              minHeight: 50,
-              minWidth: 50,
-            ),
-            child: image,
-          )
-        : image;
   }
 }
