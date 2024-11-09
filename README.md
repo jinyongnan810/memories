@@ -1,5 +1,5 @@
 # 思い出の星空/Memories
-### Web Version(https://memories-f3a84.web.app/)
+### Web Version
 
 https://github.com/user-attachments/assets/5bcd9d59-f25b-4b22-85e5-8eecb56a4826
 
